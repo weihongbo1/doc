@@ -39,3 +39,12 @@ ART 2014androidL
 
 Dalvik	执行时编译	安装快	开启慢	占用空间小
 ART	安装时编译	安装慢	开启快	占用空间大
+
+service的省电开发
+1、查看service是否存活以及降低优先级
+2、用IntentService代替Service开发
+3、后台执行的定时任务Alarm机制，AndroidL后可以用JobScheduler代替
+注意：从Android 4.4之后，Alarm任务的触发时间将会变得不准确
+JobScheduler作为一个调度应用程序，负责当应用程序被唤醒时，提供适当的运行环境
+
+网络方面，wifi更省电
