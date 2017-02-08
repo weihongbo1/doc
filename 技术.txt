@@ -79,3 +79,29 @@ if (uri != null
                 .getStringExtra(ShareCompat.EXTRA_CALLING_PACKAGE);
         String packageName = context.getPackageName();
         if (packageName.equals(callingPackage)) {
+chrome
+intent:HOST/URI-path // Optional host  
+#Intent;  
+package=[string];  
+action=[string];  
+category=[string];  
+component=[string];   
+scheme=[string];  
+end; 
+<pre name="code" class="html"><pre name="code" class="html"><a href="intent://whatever/#Intent;scheme=myapp;package=com.what.ever.myapp;end">Do Whatever</a> 
+activity:
+<activity android:name=".TestUrlScheme" >  
+            <intent-filter>  
+                <action android:name="android.intent.action.VIEW" /><!-- 显示数据 -->  
+                <category android:name="android.intent.category.DEFAULT" />  
+                <category android:name="android.intent.category.BROWSABLE" /><!-- 定义成浏览器类型，有URL需要处理时会过滤 -->  
+                <data android:scheme="myapp" android:host="whatever" android:path="/" /><!-- 打开以whatever协议的URL,这个自己随便定义。 -->  
+            </intent-filter>  
+</activity>
+传参的内容
+<a href="intent://whatever/#Intent;scheme=myapp;package=com.what.ever.myapp;S.name=Perico%20de%20los%20Palotes;I.age=35;end">Do Whatever</a> 
+activity:
+Bundle parametros = getIntent().getExtras();  
+if (extras != null){  
+    String name = extras.getString("name");  
+    Integer age = extras.getInt("age"); 
