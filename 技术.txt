@@ -105,3 +105,33 @@ Bundle parametros = getIntent().getExtras();
 if (extras != null){  
     String name = extras.getString("name");  
     Integer age = extras.getInt("age"); 
+
+android5.0特性
+1、Material Design
+2、动态替换Theme：在setContentView之前调用setTheme方法；设置了Theme，需要finish当前Activity，然后重启当前Activity，让Theme生效
+3、View的高度：elevation用于阴影，translationZ用于属性动画，汇总顺序改为先绘制高度小的，然后再按添加顺序绘制
+注意：View的颜色背景为透明，则不会显示出阴影效果；只有子View的大小比父View小时，阴影才能显示出来
+4、View的轮廓与剪裁（在Android5.1以上）
+outlineProvider：默认是background
+none：即使设置了evaluation也不显示阴影
+background：按背景来显示轮廓，如果background是颜色值，则轮廓就是view的大小，如果是shape，则按shape指定的形状作为轮廓
+bounds: View的矩形大小作轮廓
+paddedBounds: View的矩形大小减去padding的值后的大小作轮廓。
+注意：如果background是图片，那只能通过代码setOutlineProvider()来指定轮廓
+View的裁剪是指将View按照轮廓裁剪，能改变View的形状，先设置轮廓，再设置根据轮廓裁剪View，目前只支持矩形，圆形，圆角矩形的裁剪
+5、Palette的使用：从一张图片中拾取颜色
+6、水波纹动画，自定义水波纹动画以及状态选择器动画
+水波纹动画：在Android5.0以上默认自带
+自定义水波纹动画：使用ViewAnimationUtils创建圆形水波纹动画，使用ripple标签或者RippleDrawable可以更改控件水波纹动画颜色
+状态选择器动画：通过stateListAnimator属性指定状态选择器的动画
+7、CardView的使用：CardLayout拥有高度和阴影，以及轮廓裁剪，圆角等功能
+8、RecyclerView的使用
+9、ToolBar的使用：用来代替ActionBar，但是比ActionBar更加灵活
+10、Android 5.0新特性的向下兼容，通过Support Library使用，使用新API的布局放在res/layout-v21 res/drawable-v21 res/values-v21中
+
+Android 6.0新控件
+1、TextInputLayout的使用
+2、FloatingActionButton的使用
+3、Snackbar的使用
+4、TabLayout的使用
+5、CoordinatorLayout的使用
