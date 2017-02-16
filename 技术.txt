@@ -146,3 +146,29 @@ Android 6.0新控件
 2、对于内存的时候更可控，可以通过手工释放进程，达到内存优化目的。
 3、基于独立的JVM，各个模块可以充分解耦。
 4、只保留daemon进程的情况下，会使应用存活时间更长，不容易被回收掉。
+
+空进程存活时长： MAX_EMPTY_TIME = 30min
+(缓存+空)进程个数上限：MAX_CACHED_APPS = SystemProperties.getInt(“sys.fw.bg_apps_limit”,32) = 32(默认)；
+空进程个数上限：MAX_EMPTY_APPS = computeEmptyProcessLimit(MAX_CACHED_APPS) = MAX_CACHED_APPS/2 = 16；
+trim空进程个数上限：TRIM_EMPTY_APPS = computeTrimEmptyApps() = MAX_EMPTY_APPS/2 = 8；
+trim缓存进程个数上限：TRIM_CACHED_APPS = computeTrimCachedApps() = MAX_CACHED_APPS-MAX_EMPTY_APPS)/3 = 5;
+TRIM_CRITICAL_THRESHOLD = 3;
+
+adj:adj<5的应用不会被杀掉
+前台进程 0  可感知进程（前台service） 2  服务进程（后台service）5  上一个app进程（返回键）7  测试（0 2 7home 9back）
+前台进程：
+拥有用户正在交互的 Activity（已调用onResume()）
+拥有某个 Service，后者绑定到用户正在交互的 Activity
+拥有正在“前台”运行的 Service（服务已调用 startForeground()）
+拥有正执行一个生命周期回调的 Service（onCreate()、onStart() 或 onDestroy()）
+拥有正执行其 onReceive() 方法的 BroadcastReceiver
+
+可视进程：
+拥有不在前台、但仍对用户可见的 Activity（已调用onPause()）。
+拥有绑定到可见（或前台）Activity 的 Service
+
+服务进程：正在运行startService()方法启动的服务，且不属于上述两个更高类别进程的进程。
+
+后台进程：对用户不可见的Activity的进程（已调用Activity的onStop()方法）
+
+空进程：不含任何活动应用组件的进程
