@@ -155,7 +155,7 @@ trim缓存进程个数上限：TRIM_CACHED_APPS = computeTrimCachedApps() = MAX_
 TRIM_CRITICAL_THRESHOLD = 3;
 
 adj:adj<5的应用不会被杀掉
-前台进程 0  可感知进程（前台service） 2  服务进程（后台service）5  上一个app进程（返回键）7  测试（0 2 7home 9back）
+前台进程0  可感知进程（前台service）2  服务进程（后台service）5  上一个app进程（返回键）7  测试（0 2 7home 9back）
 前台进程：
 拥有用户正在交互的 Activity（已调用onResume()）
 拥有某个 Service，后者绑定到用户正在交互的 Activity
@@ -172,3 +172,9 @@ adj:adj<5的应用不会被杀掉
 后台进程：对用户不可见的Activity的进程（已调用Activity的onStop()方法）
 
 空进程：不含任何活动应用组件的进程
+
+进程包括：
+前台进程（foreground）可见进程（visible）次要服务（secondary server）后台进程（hidden）内容供应节点（content provider）空进程（empty）
+
+按HOME键，看起来似乎是退出了，但是其实这个软件并没有被关闭，而是转为了后台程序
+按退出键，看起来也是退出没错，但这个软件其实是被转为了空置程序
