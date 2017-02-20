@@ -182,3 +182,32 @@ adj:adj<5的应用不会被杀掉
 增量更新
 增量更新的流程是：用户手机上安装着某个应用，下载了增量包，手机上的apk和增量包合并形成新的包，然后再次安装（注意这个过程是要重新安装的）
 1、用户手机上提取当前安装应用的apk；2、如何利用old.apk和new.apk生成增量文件；3、增加文件与1.中的old.apk合并，然后安装
+
+manifest 
+package：整个应用的包名，通过ComponentName来启动某个Activity
+android:sharedUserId="android.uid.system"，将当前应用进程设置为系统级进程，需要在当前模块的MakeFile中添加LOCAL_CERTIFICATE := platform，然后在安卓源码环境下使用原生make命令编译才能生效
+uses-permission：为我们的应用添加必须的权限。同时我们也可以该层声明自定义的权限。
+  <permission
+      android:name="com.cold.permission.appfreeze"
+      android:protectionLevel="signatureOrSystem"/>
+
+android:theme：为当前应用的每个界面都默认设置一个主题，可以后续在activity标签层单独覆盖此Theme。
+android:allowBackup：关闭应用程序数据的备份和恢复功能，注意该属性值默认为true，如果你不需要你的应用被恢复导致隐私数据暴露
+android:hardwareAccelerated：开启硬件加速，一般应用不推介使用。就算非要使用也最好在某个Activity单独开启，避免过大的内存开销。
+android:taskAffinity：设置Activity任务栈的名称,可忽略
+android:configChanges：当我们的界面大小，方向，字体等config参数改变时，我们的Activity就会重新执行onCreate的生命周期。而当我们设置此属性后，就可以强制让Activity不重新启动，而是只会调用一次onConfigurationChanged方法
+
+intent-filter：当我们通过intent去隐式调用一个Activity时，需要同时匹配注册activity中的action、category、data才能正常启动
+action：隐式调用时intent必须setAction。一个过滤器中可以有多个action属性，只要我们的itent和其中任意一项equal则就算匹配成功
+category：匹配时也必须和过滤器中定义的值相同，当我们不为intent主动地addCategory时，系统为帮我们默认添加一个值为"android.intent.category.DEFAULT"的category
+反过来说，如果我们需要我们自己写的Activity能接受隐式intent启动，我们就必须在它的过滤器中添加"android.intent.category.DEFAULT"（深坑！），否则无法成功启动。
+data：分为mimeType和URI路径两部分：mimeType指定媒体格式类型，音频、文件、图片都有特定的属性值。
+URI则有android:scheme、android:host、android:port等属性组成，scheme代表模式（常用的有http,content,file,package），Host就是一个主机地址，Port则是端口号。
+intent.setDataAndType(Uri.parse("content://com.android.externalstorage.documents"), "vnd.android.document/root");
+
+meta-data：提供组件额外的数据用的，它本身是一个键值对，写在清单文件中之后，可以在代码中获取
+android:excludeFromRecents：设置为true后，当用户按了“最近任务列表”时候，该activity不会出现在最近任务列表中，可达到隐藏应用的目的
+
+receiver，permission：可以发送一些敏感的广播，只有添加了该permission的receiver才能接收到，而不让其他的应用收到；不加则所有有此action的接收者都能收到我们发出的广播
+Intent intent = new Intent("com.android.settings.action.SWITH_AGED_MODE");
+sendBroadcast(intent,"com.android.settings.permission.SWITH_SETTING");
