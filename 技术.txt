@@ -1,4 +1,6 @@
-
+ActivityManagerService组织回退栈时以ActivityRecord为基本单位，所有的ActivityRecord放在同一个ArrayList里，可以将mHistory看作一个栈对象，索引0所指的对象位于栈底，索引mHistory.size()-1所指的对象位于栈顶
+Zygote进程孵化出新的应用进程后，会执行ActivityThread类的main方法.在该方法里会先准备好Looper和消息队列，然后调用attach方法将应用进程绑定到ActivityManagerService，然后进入loop循环，不断地读取消息队列里的消息，并分发消息。
+ActivityThread的main方法执行后,应用进程接下来通知ActivityManagerService应用进程已启动，ActivityManagerService保存应用进程的一个代理对象，这样ActivityManagerService可以通过这个代理对象控制应用进程，然后ActivityManagerService通知应用进程创建入口Activity的实例，并执行它的生命周期方法
 
 静态存储区（方法区）：主要存放静态数据、全局 static 数据和常量。这块内存在程序编译时就已经分配好，并且在程序整个运行期间都存在。
 栈区：当方法被执行时，方法体内的局部变量（其中包括基础数据类型、对象的引用）都在栈上创建，并在方法执行结束时这些局部变量所持有的内存将会自动被释放。因为栈内存分配运算内置于处理器的指令集中，效率很高，但是分配的内存容量有限。
@@ -235,3 +237,34 @@ android:excludeFromRecents：设置为true后，当用户按了“最近任务�
 receiver，permission：可以发送一些敏感的广播，只有添加了该permission的receiver才能接收到，而不让其他的应用收到；不加则所有有此action的接收者都能收到我们发出的广播
 Intent intent = new Intent("com.android.settings.action.SWITH_AGED_MODE");
 sendBroadcast(intent,"com.android.settings.permission.SWITH_SETTING");
+
+
+折半查找
+        int low = 0;
+        int high = sz.length - 1;
+
+        while (low <= high) {
+            int middle = (low + high) / 2;
+            if(sz[middle] == key){
+                return middle;
+            }else if(sz[middle] > key){
+                high = middle - 1;
+            }else {
+                low = middle + 1;
+            }
+        }
+        return -1;
+
+jvm：
+JVM所管理的内存分为以下几个运行时数据区：程序计数器、Java虚拟机栈、本地方法栈、Java堆、方法区
+
+程序计数器：一块较小的内存空间，它是当前线程所执行的字节码的行号指示器（么有规定任何OOM）
+通过改变该计数器的值来选择下一条需要执行的字节码指令，分支、跳转、循环等基础功能，每条线程都有一个独立的的程序计数器，各线程间的计数器互不影响
+
+Java虚拟机栈：在编译程序代码时，栈帧中需要多大的局部变量表、多深的操作数栈都已经完全确定了，并且写入了方法表的Code属性之中
+
+GC的两种判定方法：引用计数与引用链
+GC的三种收集方法：标记清除、标记整理、复制算法
+标记清除：分为“标记”和“清除”两个阶段：首先标记出需要回收的对象，标记完成之后统一清除对象。它的主要缺点：1、标记和清除过程效率不高；2、标记清除之后会产生大量不连续的内存碎片。
+标记整理：标记操作和“标记-清除”算法一致，后续操作不只是直接清理对象，而是在清理无用对象完成后让所有存活的对象都向一端移动，并更新引用其对象的指针。主要缺点：在标记-清除的基础上还需进行对象的移动，成本相对较高，好处则是不会产生内存碎片。
+复制算法，它将可用内存容量划分为大小相等的两块，每次只使用其中的一块。当这一块用完之后，就将还存活的对象复制到另外一块上面，然后在把已使用过的内存空间一次理掉。这样使得每次都是对其中的一块进行内存回收，不会产生碎片等情况，只要移动堆订的指针，按顺序分配内存即可，实现简单，运行高效。主要缺点：内存缩小为原来的一半。
