@@ -315,3 +315,19 @@ Toast的Window创建过程
         Looper.prepare();  
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();  
         Looper.loop();  
+
+自定义View分为以下4类：
+1、继承view重写onDraw方法
+2、继承ViewGroup派生特殊的Layout
+3、继承特定的View(比如TextView)
+4、继承特殊的ViewGroup(比如LinearLayout)
+
+自定义View须知：
+1、让View支持wrap_content
+2、如果有必要，让你的View支持padding
+3、尽量不要在View中使用Handler，没必要
+4、View中如果有线程或者动画，需要及时停止，参考View#onDetachedFromWindow
+5、View带有滑动嵌套情形时，需要处理好滑动冲突
+
+
+
