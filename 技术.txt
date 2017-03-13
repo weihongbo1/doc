@@ -361,5 +361,16 @@ Date 与 Time API，最终，有一个稳定、简单的日期和时间库可供
 扩展方法，现在，接口中可以有静态、默认方法。 
 重复注解，现在你可以将相同的注解在同一类型上使用多次。
 
+Android 系统中的API：
+Formatter.formatFileSize(Context context, long sizeBytes)：格式化文件大小，将字节数据格式化为 B、KB、M 等单位的相应数据
+view.performClick()：自动调用 View 点击事件。通常按钮等控件只有在用户点击时才能触发其点击事件
+getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE)：设置安全窗口，禁用系统截屏
+支付宝 App 的“向商家付款”的包含付款二维码的界面，微信付款界面不是这么做的，采用的是在 onResume() 生命周期方法中实时刷新付款二维码
 
-
+  @Override
+  public void onBackPressed() {
+    Intent launcherIntent = new Intent(Intent.ACTION_MAIN);
+    launcherIntent.addCategory(Intent.CATEGORY_HOME);
+    startActivity(launcherIntent);
+  }
+  使用 Back 键返回桌面，但不关闭当前应用，而是使之进入后台
