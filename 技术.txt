@@ -381,3 +381,7 @@ android:descendantFocusability:用于 ViewGroup 中，解决作为 Parent 的 Vi
 android:duplicateParentState:是否将 View 自身的 drawable state 交给直接 parent ViewGroup 控制，值为 boolean 类型
 android:fillViewport:ScrollView 的一个属性，用于设置内容部分是否填满屏幕，主要针对内容不足以填满屏幕的情况
 android:adjustViewBounds:后者需要至少指定 ImageView 宽高中的一个属性，或者 maxHeight 之类的，然后另一个属性随之适配
+
+
+GridLayoutManager构造方法中传入了一个spanCount,这里值为3
+getSpanSize方法中，最后一个item占据2个span，其他占据一个span
