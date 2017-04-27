@@ -419,3 +419,23 @@ parcel传输大小大概是serializable的20倍了。但是官方建议使用Par
 解决方案：就是要将的@IntDef/@StringDef + @interface来进行限定参数
 @IntDef({MAN, WOMEN}) //限定为MAN,WOMEN
 @Retention(RetentionPolicy.SOURCE) //表示注解所存活的时间,在运行时,而不会存在. class 文件.
+
+热修复--腾讯：
+1、根据Android虚拟机的类加载机制，同一个类只会被加载一次。
+2、Android系统通过PathClassLoader来加载系统类和主dex中的类。而DexClassLoader则用于加载其他dex文件中的类。上述两个类都是继承自BaseDexClassLoader，具体的加载方法是findClass
+3、加载补丁的思路如下：
+    在Application的onCreate()方法中获取应用本身的BaseDexClassLoader,然后通过反射得到对应的dexElements
+    创建一个新的DexClassLoader实例，然后加载sdCard上的补丁包，然后通过同样的方法得到对应的dexElements
+    将两个dexElements合并，然后再利用反射将合并后的dexElements赋值给应用本身的BaseDexClassLoader
+4、
+    在apk安装的时候系统会将dex文件优化成odex文件，在优化的过程中会涉及一个预校验的过程
+    如果一个类的static方法，private方法，override方法以及构造函数中引用了其他类，而且这些类都属于同一个dex文件，此时该类就会被打上CLASS_ISPREVERIFIED
+    如果在运行时被打上CLASS_ISPREVERIFIED的类引用了其他dex的类，就会报错
+    所以MainActivity的onCreate()方法中引用另一个dex的类就会出现上文中的问题
+    正常的分包方案会保证相关类被打入同一个dex文件
+    想要使得patch可以被正常加载，就必须保证类不会被打上CLASS_ISPREVERIFIED标记。而要实现这个目的就必须要在分完包后的class中植入对其他dex文件中类的引用
+    要在已经编译完成后的类中植入对其他类的引用，就需要操作字节码，惯用的方案是插桩。常见的工具有javaassist，asm等。
+
+
+正常App开发过程中，编译，打包过程都是Android Studio自动完成。如无特殊需求无需人为干预，但是要实现插桩就必须在Android Studio的自动化打包流程中加入插桩的过程。
+
