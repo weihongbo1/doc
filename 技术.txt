@@ -413,3 +413,9 @@ Android 唯一设备号生成方案：通过获取到 IMEI、AndroidId、macAddr
 
 parcel即缓冲区最大1MB，并且这是该进程中所有正在进行中的传输对象所公用的。
 parcel传输大小大概是serializable的20倍了。但是官方建议使用Parcel，原因是说速度是serializable的将近10倍
+
+每一个枚举值都是一个对象,在使用它时会增加额外的内存消耗,所以枚举相比与 Integer 和 String 会占用更多的内存。
+较多的使用 Enum 会增加 DEX 文件的大小,会造成运行时更多的开销,使我们的应用需要更多的空间。
+解决方案：就是要将的@IntDef/@StringDef + @interface来进行限定参数
+@IntDef({MAN, WOMEN}) //限定为MAN,WOMEN
+@Retention(RetentionPolicy.SOURCE) //表示注解所存活的时间,在运行时,而不会存在. class 文件.
