@@ -441,3 +441,9 @@ parcel传输大小大概是serializable的20倍了。但是官方建议使用Par
 
 try中的return可以理解为保存了一份副本，即值或对象地址的保存，finally中的更改是更改原先值，return是返回副本
 如果try中有return而finally中也有return，那么后者将会让前者失效！
+
+1.subscribeOn影响是整条RxJava链路
+2.observeOn只影响它下游的链路
+3.连续调用subscribeOn是没有用的,只有第一次会生效
+4.连续调用observeOn是有用的,会不断的切换线程。
+5.在observeOn调用之后,subscribeOn的影响就会被observeOn抵消。换句话说,observeOn就是subscribeOn的"拦路虎"
