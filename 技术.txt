@@ -439,3 +439,5 @@ parcel传输大小大概是serializable的20倍了。但是官方建议使用Par
 
 正常App开发过程中，编译，打包过程都是Android Studio自动完成。如无特殊需求无需人为干预，但是要实现插桩就必须在Android Studio的自动化打包流程中加入插桩的过程。
 
+try中的return可以理解为保存了一份副本，即值或对象地址的保存，finally中的更改是更改原先值，return是返回副本
+如果try中有return而finally中也有return，那么后者将会让前者失效！
