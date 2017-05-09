@@ -460,6 +460,7 @@ try中的return可以理解为保存了一份副本，即值或对象地址的�
 Cow策略：一开始的时候（未复制Zygote进程的地址空间的时候），应用程序进程和Zygote进程共享了同一个用来分配对象的堆。当Zygote进程或者应用程序进程对该堆进行写操作时，内核就会执行真正的拷贝操作，使得Zygote进程和应用程序进程分别拥有自己的一份拷贝，这就是所谓的Cow
 
 
+https://juejin.im/post/5909c7ef570c3500583bf433
 
 activity singleTask
 其实，把启动模式设置为singleTask，framework在启动该activity时只会把它标示为可在一个新任务中启动，至于是否在一个新任务中启动，还要受其他条件的限制
