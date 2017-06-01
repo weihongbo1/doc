@@ -491,3 +491,13 @@ Oauth的认证和授权过程：
 
 Android进程保活招式大全   http://dev.qq.com/topic/57ac4a0ea374c75371c08ce8
 查看当前进程：adb root(如果需要的话) adb shell  ps   cat /proc/{pid}/oom_adj
+
+保持屏幕常亮：
+getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+onResume() 和 onPause() 方法中，分别调用这两个方法。
+
+WakeLock 是一个全局的资源，而 FLAG_KEEP_SCREEN_ON 只是一个和 window 相关的资源，作用范围更小了一些。
+并且它比 WakeLock 更好的一点在于，它不需要额外的申请权限
+
+布局中的属性 android:keepScreenOn，会在页面的根布局中，添加此属性
