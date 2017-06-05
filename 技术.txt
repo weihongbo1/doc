@@ -501,3 +501,16 @@ WakeLock 是一个全局的资源，而 FLAG_KEEP_SCREEN_ON 只是一个和 wind
 并且它比 WakeLock 更好的一点在于，它不需要额外的申请权限
 
 布局中的属性 android:keepScreenOn，会在页面的根布局中，添加此属性
+
+自动装箱和自动拆箱：
+Integer a = 10;  //实际执行的是Integer a = Integer.valueOf(10);
+int b = a;       //实际执行的是int b = a.intValue();
+拆箱操作：直接返回Integer内的数值
+装箱操作：在i大于IntegerCache.low或者i小于IntegerCache.high时返回缓存的Integer对象，否则创建新的Integer对象。
+         Integer在数据为[-128,127]之间时。使用了IntegerCache 返回缓存中对象的引用，否则new一个新的对象
+Boolean内部有true&false两个静态变量，最后装箱得到的值都是这两个静态变量的引用。
+Long&Integer&Short&Byte在数值为[-128,127]之间都有Cache。
+Double&Float则都没有。
+
+
+
