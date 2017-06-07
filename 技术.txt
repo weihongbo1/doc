@@ -512,5 +512,12 @@ Boolean内部有true&false两个静态变量，最后装箱得到的值都是这
 Long&Integer&Short&Byte在数值为[-128,127]之间都有Cache。
 Double&Float则都没有。
 
-
+map中的移除操作
+for (Iterator<Map.Entry<Integer, RouteListener>> it = map.entrySet().iterator(); it.hasNext()
+        ; ) {
+  Map.Entry<Integer, RouteListener> item = it.next();
+  if (item.getValue().equals(listener)) {
+    it.remove();
+  }
+}
 
