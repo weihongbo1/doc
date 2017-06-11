@@ -521,3 +521,43 @@ for (Iterator<Map.Entry<Integer, RouteListener>> it = map.entrySet().iterator();
   }
 }
 
+Target 
+定义了Annotation所修饰的对象范围，取值：　
+ElementType.CONSTRUCTOR:用于描述构造器
+ElementType.FIELD:用于描述域
+ElementType.LOCAL_VARIABLE:用于描述局部变量
+ElementType.METHOD:用于描述方法
+ElementType.PACKAGE:用于描述包
+ElementType.PARAMETER:用于描述参数
+ElementType.TYPE:用于描述类、接口(包括注解类型) 或enum声明
+
+Retention 
+定义了该Annotation被保留的时间长短，取值： 
+　- RetentionPoicy.SOURCE:注解只保留在源文件，当Java文件编译成class文件的时候，注解被遗弃；用于做一些检查性的操作，比如 @Override 和 @SuppressWarnings 
+　- RetentionPoicy.CLASS:注解被保留到class文件，但jvm加载class文件时候被遗弃，这是默认的生命周期；用于在编译时进行一些预处理操作，比如生成一些辅助代码（如 ButterKnife） 
+　- RetentionPoicy.RUNTIME:注解不仅被保存到class文件中，jvm加载class文件之后，仍然存在；用于在运行时去动态获取注解信息。 
+ 
+Documented 
+标记注解，用于描述其它类型的注解应该被作为被标注的程序成员的公共API，因此可以被例如javadoc此类的工具文档化，不用赋值。
+
+Inherited 
+标记注解，允许子类继承父类的注解。
+
+如果成员名称是value，在赋值过程中可以简写。如果成员类型为数组，但是只赋值一个元素，则也可以简写。 
+1、@Target(value = {ElementType.ANNOTATION_TYPE})
+2、@Target({ElementType.ANNOTATION_TYPE})
+3、@Target(ElementType.ANNOTATION_TYPE)
+
+Android SDK内置的注解 
+资源引用限制类：用于限制参数必须为对应的资源类型 
+@AnimRes @AnyRes @ArrayRes @AttrRes @BoolRes @ColorRes等
+线程执行限制类：用于限制方法或者类必须在指定的线程执行 
+@AnyThread @BinderThread @MainThread @UiThread @WorkerThread
+参数为空性限制类：用于限制参数是否可以为空 
+@NonNull @Nullable
+类型范围限制类：用于限制标注值的值范围 
+@FloatRang @IntRange
+类型定义类：用于限制定义的注解的取值集合 
+@IntDef @StringDef
+其他的功能性注解： 
+@CallSuper @CheckResult @ColorInt @Dimension @Keep @Px @RequiresApi @RequiresPermission @RestrictTo @Size @VisibleForTesting
