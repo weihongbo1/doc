@@ -580,3 +580,19 @@ Android SDK内置的注解
 
 原理LeakCanary
 当开发者想要检测一个变量是否存在内存泄漏时,直接通过RefWatcher的watch方法来进行监控,然后RefWatcher会为要监控的对象创建一个WeakReference,以及生成一个UUID来作为key表示指定变量,之后会在主线程空闲时在非主线程中判断变量是否存在泄露. 首先移除已经被回收的变量,紧接着判断监控的变量是否在为已经被移除,如果已经移除立即返回,如果没有移除,执行GC然后在判断一次变量是否被回收,如果没有回收,则立即执行dump heap,然后分析heap的使用情况来得到内存泄漏的引用链.
+
+Android6.0权限适配 
+如果使用的只是普通权限，也就是不涉及用户隐私的，比如蓝牙，网络访问等，这些权限属于普通权限，普通权限会在应用被安装的时候默认授予，用户不能拒绝，也不能取消
+动态权限的申请可以有两种形态，一种是在程序的一开始将所有的权限都申请到，一种是需要的时候再去申请，不需要不申请
+ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+ //判断该应用是否有写SD卡权限，如果没有再去申请
+     if (ContextCompat.checkSelfPermission(MainActivity.this, permission.WRITE_EXTERNAL_STORAGE) != 
+         PackageManager.PERMISSION_GRANTED) {
+         ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission
+         .WRITE_EXTERNAL_STORAGE}, 123);}
+ }
+// 调用requestPermissions会弹出对话框，用户做出选择之后的回调
+@Override
+public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//requestCode 是调用requestPermissions传入的123，当然你可以设置成其他值或者某个静态变量
