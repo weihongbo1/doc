@@ -596,3 +596,21 @@ Android6.0权限适配
 public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 //requestCode 是调用requestPermissions传入的123，当然你可以设置成其他值或者某个静态变量
+
+synchronized 详解
+互斥性：即在同一时间只允许一个线程持有某个对象锁，通过这种特性来实现多线程中的协调机制，这样在同一时间只有一个线程对需同步的代码块(复合操作)进行访问
+可见性：必须确保在锁被释放之前，对共享变量所做的修改，对于随后获得该锁的另一个线程是可见的（即在获得锁时应获得最新共享变量的值），否则另一个线程可能是在本地缓存的某个副本上继续操作从而引起不一致。
+
+对象锁：在 Java 中，每个对象都会有一个 monitor 对象，这个对象其实就是 Java 对象的锁，通常会被称为“内置锁”或“对象锁”。类的对象可以有多个，所以每个对象有其独立的对象锁，互不干扰。
+类锁：在 Java 中，针对每个类也有一个锁，可以称为“类锁”，类锁实际上是通过对象锁实现的，即类的 Class 对象锁。每个类只有一个 Class 对象，所以每个类只有一个类锁
+
+在同一对象的情况下，synchronized(this|object) {} 代码块和 synchronized 修饰非静态方法获取的锁是同一个锁，即该类的对象的对象锁
+两个线程访问不同对象的 synchronized(this|object) {} 代码块和 synchronized 修饰非静态方法是异步的，同一个类的不同对象的对象锁互不干扰。
+在同一对象的情况下，synchronized(类.class) {} 代码块或 synchronized 修饰静态方法和 synchronized(this|object) {} 代码块和 synchronized 修饰非静态方法的行为一致。
+两个线程访问不同对象的 synchronized(类.class) {} 代码块或 synchronized 修饰静态方法还是同步的，类中 synchronized(类.class) {} 代码块和 synchronized 修饰静态方法获取的锁是类锁。对于同一个类的不同对象的类锁是同一个。
+synchronized 修饰静态方法和 synchronized 修饰非静态方法是异步的，对于 synchronized(类.class) {} 代码块和 synchronized(this|object) {} 代码块也是一样的。所以对象锁和类锁是独立的，互不干扰
+
+1、synchronized关键字不能继承。对于父类中的 synchronized 修饰方法，子类在覆盖该方法时，默认情况下不是同步的，必须显示的使用 synchronized 关键字修饰才行。
+2、在定义接口方法时不能使用synchronized关键字。
+3、构造方法不能使用synchronized关键字，但可以使用synchronized代码块来进行同步。
+
