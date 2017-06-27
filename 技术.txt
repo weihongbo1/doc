@@ -614,3 +614,8 @@ synchronized 修饰静态方法和 synchronized 修饰非静态方法是异步�
 2、在定义接口方法时不能使用synchronized关键字。
 3、构造方法不能使用synchronized关键字，但可以使用synchronized代码块来进行同步。
 
+apk签名：
+a. 解析出 CERT.RSA 文件中的证书、公钥，解密 CERT.RSA 中的加密数据
+b. 解密结果和 CERT.SF 的指纹进行对比，保证 CERT.SF 没有被篡改
+c. 而 CERT.SF 中的内容再和 MANIFEST.MF 指纹对比，保证 MANIFEST.MF 文件没有被篡改
+d. MANIFEST.MF 中的内容和 APK 所有文件指纹逐一对比，保证 APK 没有被篡改
