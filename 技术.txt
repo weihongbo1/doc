@@ -619,3 +619,5 @@ a. 解析出 CERT.RSA 文件中的证书、公钥，解密 CERT.RSA 中的加密
 b. 解密结果和 CERT.SF 的指纹进行对比，保证 CERT.SF 没有被篡改
 c. 而 CERT.SF 中的内容再和 MANIFEST.MF 指纹对比，保证 MANIFEST.MF 文件没有被篡改
 d. MANIFEST.MF 中的内容和 APK 所有文件指纹逐一对比，保证 APK 没有被篡改
+
+HashMap：if (e.hash == hash && ((k = e.key) == key || key.equals(k)))
