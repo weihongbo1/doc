@@ -689,3 +689,6 @@ public static File getInternalCacheDirectory(Context context,String type) {
 }
 
 JAVA字符串格式化-String.format()的使用 ：http://blog.csdn.net/lonely_fireworks/article/details/7962171/
+
+Fragment源码详解：http://www.cnblogs.com/punkisnotdead/p/4974527.html
+Fragment可以加到其他ViewGrop中  ViewGroup就是我们在把这个Fragment添加进Activity时候写的id相对应的布局
