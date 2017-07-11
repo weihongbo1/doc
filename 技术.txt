@@ -707,3 +707,7 @@ int maxMemory = (int) (Runtime.getRuntime().totalMemory()/1024);
 
 Realm 的性能应该是最好的，同时它执行跨平台，且并不是采用 SQLite 的持久化引擎。但是也有不少的缺点（具体查看文章为什么我不再使用Realm）。
 greenDAO 是基于AndroidSQLite的最快、性能最强悍的数据库框架，因为他不涉及反射，靠的是代码辅助生成。
+
+foreach内部的实现机制其实就是使用的Iterator
+ArrayList的头部插入了一个元素，使得你所有的元素都往后移动，于是你当前访问的第5个元素就会被重复访问。
+java 认为在迭代过程中，容器应当保持不变。因此，java 容器中通常保留了一个域称为 modCount，每次你对容器修改，这个值就会加1。当你调用 iterator 方法时，返回的迭代器会记住当前的 modCount，随后迭代过程中会检查这个值，一旦发现这个值发生变化，就说明你对容器做了修改，就会抛异常。 
