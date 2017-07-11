@@ -704,3 +704,6 @@ int maxMemory = (int) (Runtime.getRuntime().totalMemory()/1024);
                return value.getRowBytes()*value.getHeight()/1024;
            }
        };
+
+Realm 的性能应该是最好的，同时它执行跨平台，且并不是采用 SQLite 的持久化引擎。但是也有不少的缺点（具体查看文章为什么我不再使用Realm）。
+greenDAO 是基于AndroidSQLite的最快、性能最强悍的数据库框架，因为他不涉及反射，靠的是代码辅助生成。
