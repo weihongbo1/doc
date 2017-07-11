@@ -692,3 +692,15 @@ JAVA字符串格式化-String.format()的使用 ：http://blog.csdn.net/lonely_f
 
 Fragment源码详解：http://www.cnblogs.com/punkisnotdead/p/4974527.html
 Fragment可以加到其他ViewGrop中  ViewGroup就是我们在把这个Fragment添加进Activity时候写的id相对应的布局
+
+LRU是近期最少使用的算法，它的核心思想是当缓存满时，会优先淘汰那些近期最少使用的缓存对象。采用LRU算法的缓存有两种：LrhCache和DisLruCache，分别用于实现内存缓存和硬盘缓存
+LruCache的核心思想 就是要维护一个缓存对象列表，其中对象列表的排列方式是按照访问顺序实现的，即一直没访问的对象，将放在队尾，即将被淘汰
+LinkedHashMap是由数组+双向链表的数据结构来实现的。其中双向链表的结构可以实现访问顺序和插入顺序，其中accessOrder设置为true则为访问顺序，为false，则为插入顺序
+int maxMemory = (int) (Runtime.getRuntime().totalMemory()/1024);
+       int cacheSize = maxMemory/8;
+       mMemoryCache = new LruCache<String,Bitmap>(cacheSize){
+           @Override
+           protected int sizeOf(String key, Bitmap value) {
+               return value.getRowBytes()*value.getHeight()/1024;
+           }
+       };
