@@ -718,3 +718,15 @@ java 认为在迭代过程中，容器应当保持不变。因此，java 容器�
 disposables.clear(); 
 // Using dispose will clear all and set isDisposed = true, so it will not accept any new disposable
 disposables.dispose(); 
+
+buildTypes {
+    debug {
+        applicationIdSuffix '.debug'
+        versionNameSuffix '-debug'
+    }
+
+    beta.initWith(buildTypes.debug)
+    beta {
+        applicationIdSuffix '.beta'
+        versionNameSuffix '-beta'
+    }
