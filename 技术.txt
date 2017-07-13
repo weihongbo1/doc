@@ -730,3 +730,16 @@ buildTypes {
         applicationIdSuffix '.beta'
         versionNameSuffix '-beta'
     }
+
+Library Module
+library依赖于其它module时将默认使用release构建类型，如果要更改为我们自己的构建类型时，有两种方法：
+defaultPublishConfig "googleBeta"
+publishNonDefault true    compile project(path:':library', configuration:'demoDebug')
+
+Resource Merge
+build variant > build type > product flavor > main source set > library dependencies
+
+Resource Overlay：对资源一种额外补充，当在主资源集中未找到该资源时，这时会在我们添加的重叠包中进行查找
+additionalParameters '-S', 'src/main/res2',
+            '-S', 'src/main/res3',
+            '--auto-add-overlay'
