@@ -714,6 +714,7 @@ java 认为在迭代过程中，容器应当保持不变。因此，java 容器�
 
 当我们用Application去启动standard模式的activity时会报错，这是因为非activity类型的context没有所谓的任务栈，解决这个问题方法是为待启动的activity指定FLAG_ACTIVITY_NEW_TASK 标记位，这样在启动的时候为该activity创建了一个新的任务栈，这个时候待启动的activity实际上是以singleTask 模式启动的
 
-当我们用Application去启动standard模式的activity时会报错，这是因为非activity类型的context没有所谓的任务栈，解决这个问题方法是为待启动的activity指定FLAG_ACTIVITY_NEW_TASK 标记位，这样在启动的时候为该activity创建了一个新的任务栈，这个时候待启动的activity实际上是以singleTask 模式启动的
-
-当我们用Application去启动standard模式的activity时会报错，这是因为非activity类型的context没有所谓的任务栈，解决这个问题方法是为待启动的activity指定FLAG_ACTIVITY_NEW_TASK 标记位，这样在启动的时候为该activity创建了一个新的任务栈，这个时候待启动的activity实际上是以singleTask 模式启动的
+// Using clear will clear all, but can accept new disposable
+disposables.clear(); 
+// Using dispose will clear all and set isDisposed = true, so it will not accept any new disposable
+disposables.dispose(); 
