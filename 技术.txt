@@ -746,3 +746,16 @@ additionalParameters '-S', 'src/main/res2',
             
 adb shell am start -w packagename/activity 
 ThisTime表示一连串启动Activity的最后一个Activity的启动耗时；TotalTime表示新应用启动的耗时，包括新进程的启动和Activity的启动，但不包括前一个应用Activity pause的耗时。也就是说，开发者一般只要关心TotalTime即可，这个时间才是自己应用真正启动的耗时。 
+
+
+newCachedThreadPool：
+return new ThreadPoolExecutor(0, Integer.MAX_VALUE,60L, TimeUnit.SECONDS,new SynchronousQueue<Runnable>());
+newFixedThreadPool：
+return new ThreadPoolExecutor(nThreads, nThreads,0L, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>());
+
+public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,BlockingQueue<Runnable> workQueue) {
+    this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,Executors.defaultThreadFactory(), defaultHandler);
+}
+maximumPoolSize就是线程池的最大线程数；对于cached ThreadPool来说，这个值是Integer.MAX_VALUE，基本相当于无穷大了，什么样的机器能跑几十亿线程！！对于fixed ThreadPool来讲，这个值就是用户设定的线程池的数目。
+keepAliveTime和unit决定了线程的缓存过期时间；对于cached ThreadPool来讲，线程的缓存过期时间是一分钟，换言之，一个工作线程如果一分钟都无事可干，就把它撤销掉以节省资源。fixed ThreadPool传入的时间是0，这里的含义是fixed ThreadPool中的工作线程是永远不过期的。
+corePoolSize是线程池的最小线程数；对于cached ThreadPool，这个值为0，因为在完全没有任务的情况下，cached ThreadPool的确会成为“光杆司令”。至于fixed ThreadPool，这个fixed已经表明corePoolSize是等于线程总数的
