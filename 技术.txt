@@ -743,3 +743,6 @@ Resource Overlay：对资源一种额外补充，当在主资源集中未找到�
 additionalParameters '-S', 'src/main/res2',
             '-S', 'src/main/res3',
             '--auto-add-overlay'
+            
+adb shell am start -w packagename/activity 
+ThisTime表示一连串启动Activity的最后一个Activity的启动耗时；TotalTime表示新应用启动的耗时，包括新进程的启动和Activity的启动，但不包括前一个应用Activity pause的耗时。也就是说，开发者一般只要关心TotalTime即可，这个时间才是自己应用真正启动的耗时。 
