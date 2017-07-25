@@ -759,3 +759,14 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
 maximumPoolSize就是线程池的最大线程数；对于cached ThreadPool来说，这个值是Integer.MAX_VALUE，基本相当于无穷大了，什么样的机器能跑几十亿线程！！对于fixed ThreadPool来讲，这个值就是用户设定的线程池的数目。
 keepAliveTime和unit决定了线程的缓存过期时间；对于cached ThreadPool来讲，线程的缓存过期时间是一分钟，换言之，一个工作线程如果一分钟都无事可干，就把它撤销掉以节省资源。fixed ThreadPool传入的时间是0，这里的含义是fixed ThreadPool中的工作线程是永远不过期的。
 corePoolSize是线程池的最小线程数；对于cached ThreadPool，这个值为0，因为在完全没有任务的情况下，cached ThreadPool的确会成为“光杆司令”。至于fixed ThreadPool，这个fixed已经表明corePoolSize是等于线程总数的
+
+Intent.FLAG_ACTIVITY_SINGLE_TOP
+  该标志位表示使用singleTop模式来启动一个Activity，与在清单文件指定android:launchMode=”singleTop”效果相同。
+Intent.FLAG_ACTIVITY_CLEAR_TOP
+  该标志位表示使用singleTask模式来启动一个Activity，与在清单文件指定android：launchMode=”singleTask”效果相同。
+Intent.FLAG_ACTIVITY_NO_HISTORY
+  使用该模式来启动Activity，当该Activity启动其他Activity后，该Activity就被销毁了，不会保留在任务栈中。如A-B,B中以这种模式启动C，C再启动D，则任务栈只有ABD。
+Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+  使用该标识位启动的Activity不添加到最近应用列表，也即我们从最近应用里面查看不到我们启动的这个activity。与属性android:excludeFromRecents=”true”效果相同。
+Intent.FLAG_ACTIVITY_NEW_TASK
+该标志位表示使用一个新的Task来启动一个Activity，相当于在清单文件中给Activity指定“singleTask”启动模式。通常我们在Service启动Activity时，由于Service中并没有Activity任务栈，所以必须使用该Flag来创建一个新的Task。
