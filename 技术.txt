@@ -770,3 +770,5 @@ Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
   使用该标识位启动的Activity不添加到最近应用列表，也即我们从最近应用里面查看不到我们启动的这个activity。与属性android:excludeFromRecents=”true”效果相同。
 Intent.FLAG_ACTIVITY_NEW_TASK
 该标志位表示使用一个新的Task来启动一个Activity，相当于在清单文件中给Activity指定“singleTask”启动模式。通常我们在Service启动Activity时，由于Service中并没有Activity任务栈，所以必须使用该Flag来创建一个新的Task。
+
+Object类的hashcode方法取决于JVM的实现，比较典型的一种实现是基于内存地址进行哈希运算，此外也有基于伪随机数的实现。
