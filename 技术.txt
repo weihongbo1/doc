@@ -772,3 +772,16 @@ Intent.FLAG_ACTIVITY_NEW_TASK
 该标志位表示使用一个新的Task来启动一个Activity，相当于在清单文件中给Activity指定“singleTask”启动模式。通常我们在Service启动Activity时，由于Service中并没有Activity任务栈，所以必须使用该Flag来创建一个新的Task。
 
 Object类的hashcode方法取决于JVM的实现，比较典型的一种实现是基于内存地址进行哈希运算，此外也有基于伪随机数的实现。
+
+Recycler
+（1）检查mChangedScrap，若匹配到则返回相应holder
+（2）检查mAttachedScrap，若匹配到且holder有效则返回相应holder
+（3）检查mViewCacheExtension，若匹配到则返回相应holder
+（4）检查mRecyclerPool，若匹配到则返回相应holder
+（5）否则执行Adapter.createViewHolder()，新建holder实例
+（6）返回holder再通过 holder.itemView 得到了要添加的 View.
+
+在 Recycler的各级缓存中，只有RecycledViewPool是按照 viewType 去存储和获取缓存的 ViewHolder 来达到复用，其它缓存需要匹配 layoutPosition 或 getItemId再加上 viewType 。
+缓存级别最高的是mChangedScrap它是预处理layout时添加的，对应方法 dispatchLayoutStep1；mAttachedScrap是其次，它是attach到容器未移除的缓存复用很适用频繁抖动滑动；mCachedViews再次，它是 detach 的 ViewHolder 缓存，mViewCacheExtension是用户扩展的缓存池一般用户是没有实现的，最后才是 RecyclerViewPool它只需要按viewType 返回
+
+draw 过程比较简单，只是简单循环调用了ItemDecoration去绘制背景和前景视图
