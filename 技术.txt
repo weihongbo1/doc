@@ -789,3 +789,7 @@ draw 过程比较简单，只是简单循环调用了ItemDecoration去绘制背�
 http://www.voidcn.com/blog/lihenair/article/p-6050531.html
 
 http://www.jianshu.com/p/63e29dc43a69
+
+Android原生音量控制： http://blog.csdn.net/u013082948/article/details/65630085
+
+android-ui：https://github.com/wasabeef/awesome-android-ui
