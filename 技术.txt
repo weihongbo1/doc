@@ -795,3 +795,6 @@ Android原生音量控制： http://blog.csdn.net/u013082948/article/details/656
 android-ui：https://github.com/wasabeef/awesome-android-ui
 
  Instant Apps 是基于 Android 操作系统的，微信小程序是基于微信 App 生态的，但本质上还是不一样的，Instant Apps 本质上还是原生 App，只不过允许你在下载安装之前，先体验下 App 部分模块的功能，觉得不错，适合你，那么你可以再下载安装，而微信小程序本质上不是原生应用，他是基于一种类似 React Native 的框架来达到原生的体验，而且只能在微信内部运行
+
+
+Android软键盘的全面解析，让你不再怕控件被遮盖：http://blog.csdn.net/l540675759/article/details/74528641
