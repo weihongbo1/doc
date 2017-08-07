@@ -800,3 +800,6 @@ android-ui：https://github.com/wasabeef/awesome-android-ui
 Android软键盘的全面解析，让你不再怕控件被遮盖：http://blog.csdn.net/l540675759/article/details/74528641
 
 2个函数终结状态栏6个疑难杂症：https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&mid=2247486202&idx=1&sn=49b04f0ccacef9324dc4d8184c122cf4&chksm=96cdabb7a1ba22a153dc71a0872fc46f63cab1c60224088ab00cf798ec1d2dbf166032a491f2&mpshare=1&scene=23&srcid=0804LRef4fAzGVMgmUWhxgDs#rd
+
+
+项目编译时产生的R文件存在的位置是与Manifest 中配置包名也就是项目的工程目录相对应的目录中，而代码中获取的项目包名是 build.gradle 中配置的applicationId对应的包名，如果再使用这个包名去反射获取R文件当然是失败的了
