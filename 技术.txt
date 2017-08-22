@@ -824,3 +824,8 @@ Android 使用的Java 库是Apache的Harmony, 与官方Java库接口相同，里
 就在06年的时候Sun公司宣布会将JDK开源，但是直到2009年4月才正式发布，而Android已经在2008年发布第一步部智能手机了。所以Google最早的时候使用了当时Apache的Java开源实现Harmony项目。
 
 可惜Sun公司一直不承认Harmony，前不久Harmony那一帮人怒了，给Oracle放狠话说再不承认我我就抵制Java7，结果反倒把Google吓坏了，于是就出现了google宣布切换到openjdk上这条新闻。在Android N上，已经切换到OpenJDK了；基本可以认为Android SDK下的源码与JDK相同。
+
+
+    synchronized 无法中断一个正在等候获得锁的线程，也无法通过投票得到锁
+    ReentrantLock 拥有与 synchronized 相同的并发性和内存语义，但是添加了类似锁投票、定时锁等候和可中断锁等候的一些特性
+
