@@ -815,3 +815,12 @@ Android软键盘的全面解析，让你不再怕控件被遮盖：http://blog.c
 项目编译时产生的R文件存在的位置是与Manifest 中配置包名也就是项目的工程目录相对应的目录中，而代码中获取的项目包名是 build.gradle 中配置的applicationId对应的包名，如果再使用这个包名去反射获取R文件当然是失败的了
 
 在weak reference指向的对象被回收后, weak reference本身其实也就没有用了. java提供了一个ReferenceQueue来保存这些所指向的对象已经被回收的reference. 用法是在定义WeakReference的时候将一个ReferenceQueue的对象作为参数传入构造函数
+
+CopyOnWriteArrayList 的读操作（比如 get()）也不会阻塞其他操作；写操作则是通过复制一份，对复制版本进行操作，不会影响原来的数据
+JDK8 中的 CopyOnWriteArrayList 底层实现也是数组，不同之处在于使用 Lock 而不是 synchronized 进行同步
+
+Android 使用的Java 库是Apache的Harmony, 与官方Java库接口相同，里面实现不一样。
+
+就在06年的时候Sun公司宣布会将JDK开源，但是直到2009年4月才正式发布，而Android已经在2008年发布第一步部智能手机了。所以Google最早的时候使用了当时Apache的Java开源实现Harmony项目。
+
+可惜Sun公司一直不承认Harmony，前不久Harmony那一帮人怒了，给Oracle放狠话说再不承认我我就抵制Java7，结果反倒把Google吓坏了，于是就出现了google宣布切换到openjdk上这条新闻。在Android N上，已经切换到OpenJDK了；基本可以认为Android SDK下的源码与JDK相同。
