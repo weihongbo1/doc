@@ -833,8 +833,9 @@ library依赖于其它module时将默认使用release构建类型，如果要更
 defaultPublishConfig "googleBeta"
 publishNonDefault true    compile project(path:':library', configuration:'demoDebug')
 
-
-
+org.gradle.parallel=ture //并行构建启动
+org.gradle.daemon=true //gradle守护进程
+建议 : debug 状态下提高构建速度，可以将这两个选项打开。 但是真正在线上机器做 release 打包时还是关闭了吧
 
 ============================================================
 =====                      网站                        =====
