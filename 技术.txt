@@ -207,6 +207,11 @@ Oauth的认证和授权过程：
 
 微信扫码登录核心过程应该是这样的：浏览器获得一个唯一的、临时的UUID，通过长连接等待客户端扫描带有此UUID的二维码后，从长连接中获得客户端上报给服务器的帐号信息进行展示。并在客户端点击确认后，获得服务器授信的令牌，进行随后的信息交互过程。 在超时、网络断开、其他设备上登录后，此前获得的令牌或丢失、或失效，对授权过程形成有效的安全防护，类似的应用还有扫码支付、扫码加公众号等功能.
 
+UUID由以下几部分的组合：
+（1）当前日期和时间，UUID的第一个部分与时间有关，如果你在生成一个UUID之后，过几秒又生成一个UUID，则第一个部分不同，其余相同。
+（2）时钟序列。
+（3）全局唯一的IEEE机器识别号，如果有网卡，从网卡MAC地址获得，没有网卡以其他方式获得。
+
 
 ============================================================
 =====               Android基础知识                    =====
@@ -480,6 +485,13 @@ IdleHandler的原理就是在messageQueue因为空闲等待消息时给使用者
 在reference类加载的时候，java虚拟机会创建一个最大优先级的后台线程，这个线程的工作原理就是不断检测pending是否为null，如果不为null，就将其放入ReferenceQueue中，pending不为null的情况就是，引用所指向的对象已被GC，变为不可达。
 那么只要我们在构造弱引用的时候指定了ReferenceQueue，每当弱引用所指向的对象被内存回收的时候，我们就可以在queue中找到这个引用。如果我们期望一个对象被回收，那如果在接下来的预期时间之后，我们发现它依然没有出现在ReferenceQueue中，那就可以判定它的内存泄露了
 LeakCanary只支持4.0以上，原因是其中在watch 每个Activity时适用了Application的registerActivityLifecycleCallback函数，这个函数只在4.0上才支持，但是在4.0以下也是可以用的，可以在Application中将返回的RefWatcher存下来，然后在基类Activity的onDestroy函数中调用
+
+判断Application是否是在service进程里面启动，最直接的方法就是判断当前进程名和service所属的进程是否相同。当前进程名的获取方式是使用ActivityManager的getRunningAppProcessInfo方法，找到进程pid与当前进程pid相同的进程，然后从中拿到processName. service所属进程名。获取service应处进程的方法是用PackageManager的getPackageInfo方法。
+
+作者：呆萌狗和求疵喵
+链接：http://www.jianshu.com/p/5ee6b471970e
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 apk签名：
 a. 解析出 CERT.RSA 文件中的证书、公钥，解密 CERT.RSA 中的加密数据
