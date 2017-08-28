@@ -875,9 +875,9 @@ org.gradle.daemon=true //gradle守护进程
 ============================================================
 =====                      网站                        =====
 ============================================================
-http://www.voidcn.com/blog/lihenair/article/p-6050531.html
+生成带混淆配置的aar库： http://www.voidcn.com/blog/lihenair/article/p-6050531.html
 
-http://www.jianshu.com/p/63e29dc43a69
+Android 截屏方式整理： http://www.jianshu.com/p/63e29dc43a69
 
 Android原生音量控制： http://blog.csdn.net/u013082948/article/details/65630085
 
