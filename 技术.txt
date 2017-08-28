@@ -542,6 +542,12 @@ Android 使用的Java 库是Apache的Harmony, 与官方Java库接口相同，里
 就在06年的时候Sun公司宣布会将JDK开源，但是直到2009年4月才正式发布，而Android已经在2008年发布第一步部智能手机了。所以Google最早的时候使用了当时Apache的Java开源实现Harmony项目。
 可惜Sun公司一直不承认Harmony，前不久Harmony那一帮人怒了，给Oracle放狠话说再不承认我我就抵制Java7，结果反倒把Google吓坏了，于是就出现了google宣布切换到openjdk上这条新闻。在Android N上，已经切换到OpenJDK了；基本可以认为Android SDK下的源码与JDK相同。
 
+Bitmap图片加载大小：
+理论上是：getByteCount(){return getRowBytes() * getHeight(); } 即：bitmapInRam = bitmapWidth * 4 bytes * bitmapHeight
+实际上还与其设备的density 有关
+scale = targetDensity / inDensity  （设备的 density  /  bitmap 所在文件夹对应的 density）
+bitmapInRam = (bitmapWidth*scale) * (bitmapHeight*scale) * 4 bytes
+
 
 ============================================================
 =====                 Android开发技术                  =====
