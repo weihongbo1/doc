@@ -694,6 +694,11 @@ disposables.clear();
 // Using dispose will clear all and set isDisposed = true, so it will not accept any new disposable
 disposables.dispose();
 
+SingleScheduler  使用newScheduledThreadPool线程池定义定时器，最大允许线程数为1 单线程，按照先进先出的顺序依次执行
+ComputationScheduler  使用FixedSchedulerPool作为线程池，线程池数量为CPU数量 MAX_THREADS = cap(Runtime.getRuntime().availableProcessors(), Integer.getInteger(KEY_MAX_THREADS, 0));
+IoScheduler  使用CachedWorkerPool作为线程池
+NewThreadScheduler  创建NewThreadWorker SingleScheduler的executor是使用AtomicReference包装的ScheduledExecutorService。每次使用时，会调用executor.get()，NewThreadScheduler每次都会创建一个新的线程
+特别需要的是 ComputationScheduler 和 IoScheduler 都是依赖线程池来维护线程的，区别就是 IoScheduler 线程池中的个数是无限的，由 prefix 和 incrementAndGet() 产生的递增值来决定线程的名字；而 ComputationScheduler 中则是一个固定线程数量的线程池，数据为CPU的数目，并且不要把 I/O 操作放在 computation() 中，否则 I/O 操作的等待时间会浪费 CPU
 
 
 保持屏幕常亮：
@@ -875,3 +880,5 @@ android-ui：https://github.com/wasabeef/awesome-android-ui
 Android软键盘的全面解析，让你不再怕控件被遮盖：http://blog.csdn.net/l540675759/article/details/74528641
 
 2个函数终结状态栏6个疑难杂症：https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&mid=2247486202&idx=1&sn=49b04f0ccacef9324dc4d8184c122cf4&chksm=96cdabb7a1ba22a153dc71a0872fc46f63cab1c60224088ab00cf798ec1d2dbf166032a491f2&mpshare=1&scene=23&srcid=0804LRef4fAzGVMgmUWhxgDs#rd
+
+RxJava 线程模型分析：https://juejin.im/post/59a369586fb9a024851027af
