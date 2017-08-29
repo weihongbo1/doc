@@ -888,3 +888,5 @@ Android软键盘的全面解析，让你不再怕控件被遮盖：http://blog.c
 2个函数终结状态栏6个疑难杂症：https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&mid=2247486202&idx=1&sn=49b04f0ccacef9324dc4d8184c122cf4&chksm=96cdabb7a1ba22a153dc71a0872fc46f63cab1c60224088ab00cf798ec1d2dbf166032a491f2&mpshare=1&scene=23&srcid=0804LRef4fAzGVMgmUWhxgDs#rd
 
 RxJava 线程模型分析：https://juejin.im/post/59a369586fb9a024851027af
+
+Android 你不知道的霸道总裁模式：http://www.jianshu.com/p/06063c226ba0
