@@ -548,6 +548,13 @@ Bitmap图片加载大小：
 scale = targetDensity / inDensity  （设备的 density  /  bitmap 所在文件夹对应的 density）
 bitmapInRam = (bitmapWidth*scale) * (bitmapHeight*scale) * 4 bytes
 
+触发ANR后输出traces.txt的过程：
+1、有序广播在注册后发送
+2、AMS设置广播超时时间，通过Handler进行延迟设定
+3、广播超时触发超时机制
+4、Framework层发送信号给虚拟机
+5、虚拟机dump出特定进程所有线程信息并存储到traces.txt文件中
+
 
 ============================================================
 =====                 Android开发技术                  =====
