@@ -985,6 +985,106 @@ public static boolean isInServiceProcess(Context context, Class<? extends Servic
     return myProcess.processName.equals(serviceInfo.processName);
   }
 
+电量数据收集
+1、因为电量统计数据是持续的, 会非常大, 统计我们的待测试App之前先reset下, 连上设备, 命令行执行:
+$ adb shell dumpsys batterystats --reset
+Battery stats reset.
+
+断开测试设备, 操作我们的待测试App.
+重新连接设备, 使用adb命令导出相关统计数据:
+
+// 此命令持续记录输出, 想要停止记录时按Ctrl+C退出.
+$ adb bugreport > bugreport.txt
+
+监听手机充电状态
+
+// It is very easy to subscribe to changes to the battery state, but you can get the current 
+// state by simply passing null in as your receiver. Nifty, isn't that? 
+IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED); 
+Intent batteryStatus = this.registerReceiver(null, filter); 
+int chargePlug = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1); 
+boolean acCharge = (chargePlug == BatteryManager.BATTERY_PLUGGED_AC); 
+if (acCharge) { Log.v(LOG_TAG,“The phone is charging!”); }
+
+只有当前手机为AC充电状态时 才去执行一些非常耗电的操作
+/** * This method checks for power by comparing the current battery state against all possible * plugged in states. In this case, a device may be considered plugged in either by USB, AC, or * wireless charge. (Wireless charge was introduced in API Level 17.) */ 
+private boolean checkForPower() {
+ // It is very easy to subscribe to changes to the battery state, but you can get the current 
+ // state by simply passing null in as your receiver. Nifty, isn't that? 
+ IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED); 
+ Intent batteryStatus = this.registerReceiver(null, filter); 
+ // There are currently three ways a device can be plugged in. We should check them all. 
+ int chargePlug = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1); 
+ boolean usbCharge = (chargePlug == BatteryManager.BATTERY_PLUGGED_USB); 
+ boolean acCharge = (chargePlug == BatteryManager.BATTERY_PLUGGED_AC); 
+ boolean wirelessCharge = false; 
+ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+  wirelessCharge = (chargePlug == BatteryManager.BATTERY_PLUGGED_WIRELESS); 
+ } return (usbCharge || acCharge || wirelessCharge); 
+}
+
+保持屏幕常亮
+getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+另一个方式是在布局文件中使用android:keepScreenOn属性：作用和FLAG_KEEP_SCREEN_ON一样
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:keepScreenOn="true">
+一般不需要人为的去掉FLAG_KEEP_SCREEN_ON的flag，windowManager会管理好程序进入后台回到前台的的操作。如果确实需要手动清掉常亮的flag，使用getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+WakeLock
+wake_lock锁主要是相对系统的休眠而言的，意思就是我的程序给CPU加了这个锁那系统就不会休眠了，这样做的目的是为了全力配合我们程序的运行
+使用场景，是在使用后台服务在屏幕关闭情况下hold住CPU完成一些工作。 要使用唤醒锁，如果不使用唤醒锁来执行后台服务，不能保证因CPU休眠未来的某个时刻任务会停止
+唤醒锁可划分为并识别四种用户唤醒锁：
+标记值 	                  CPU 	屏幕 	键盘
+PARTIAL_WAKE_LOCK       	开启 	关闭 	关闭
+SCREEN_DIM_WAKE_LOCK    	开启 	变暗 	关闭
+SCREEN_BRIGHT_WAKE_LOCK 	开启 	变亮 	关闭
+FULL_WAKE_LOCK 	          开启 	变亮 	变亮  （废弃）
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE); 
+WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"MyWakelockTag"); 
+wakeLock.acquire();
+必须保证acquire和release是成对出现的
+
+JobScheduler
+JobScheduler 已成为执行后台工作的首选方式，其工作方式有利于用户。应用可以在安排作业的同时允许系统基于内存、电源和连接情况进行优化。JobSchedule的宗旨就是把一些不是特别紧急的任务放到更合适的时机批量处理
+好处：
+避免频繁的唤醒硬件模块，造成不必要的电量消耗。
+避免在不合适的时间(例如低电量情况下、弱网络或者移动网络情况下的)执行过多的任务消耗电量；
+
+GPS
+GPS_PROVIDER:
+GPS定位，利用GPS芯片通过卫星获得自己的位置信息。定位精准度高，一般在10米左右，耗电量大；但是在室内，GPS定位基本没用
+NETWORK_PROVIDER：
+网络定位，利用手机基站和WIFI节点的地址来大致定位位置，这种定位方式取决于服务器，即取决于将基站或WIF节点信息翻译成位置信息的服务器的能力。
+PASSIVE_PROVIDER
+被动定位，就是用现成的，当其他应用使用定位更新了定位信息，系统会保存下来，该应用接收到消息后直接读取就可以了。比如如果系统中已经安装了百度地图，高德地图(室内可以实现精确定位)，你只要使用它们定位过后，再使用这种方法在你的程序肯定是可以拿到比较精确的定位信息。
+
+及时注销定位监听
+在获取到定位之后或者程序处于后台时，注销定位监听，此时监听GPS传感器相当于执行no-op（无操作指令），用户不会有感知但是却耗电
+public void onPause() {
+ super.onPause(); 
+ locationManager.removeListener(locationListener); 
+} 
+public void onResume(){
+ super.onResume();
+ locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, true),6000,100,locationListener); 
+}
+
+传感器
+使用传感器，选择合适的采样率，越高的采样率类型则越费电
+SENSOR_DELAY_NOMAL (200000微秒)
+SENSOR_DELAY_UI (60000微秒)
+SENSOR_DELAY_GAME (20000微秒)
+SENSOR_DELAY_FASTEST (0微秒)
+
+
+
+
+
+
+
 ============================================================
 =====                      网站                        =====
 ============================================================
@@ -1007,3 +1107,5 @@ Android 你不知道的霸道总裁模式：http://www.jianshu.com/p/06063c226ba
 一种边播边下的播放策略： https://mp.weixin.qq.com/s?__biz=MzI2OTQxMTM4OQ==&mid=2247485181&idx=1&sn=b0226b55629bdc5787cbdc71feecbbca&chksm=eae1f3afdd967ab9fe8a81eab348c1a1699a46284f7a45f7f30a8ee8279a565aaf91d39a2de8#rd
 
 Android UI优化：http://yydcdut.com/2017/03/10/ui-optimize/
+
+Android性能优化-电量优化: http://www.jianshu.com/p/ded0ed6fac3d
