@@ -662,6 +662,16 @@ debug.keystore在不同的机器上所生成的可能都不一样，即如果不
 大部分应用程序商店（包括谷歌Play商店）不会接受调试证书签名的APK。
 证书中的有效期、证书持有者姓名、组织名称、城市及国家等信息不影响证书是否相同的判定，即只要证书公私钥信息一致，系统就判定证书相同。
 
+Android字体
+Android 系统默认使用的是一款叫做 Robote 的字体。Robote 本身就是 Google 自己的字体格式，Android 和 Chrome 操作系统上，默认都会使用 Robote 字体，并且也是 Google 视觉语言推荐的字体
+Android 本身已经提供了一些修改字体样式的属性和方法 
+android:textStyle：对所有的字体都生效，可选项有 normal|bold|italic
+android:typeface：它可选的属性有 normal|sans|serif|monospace 等。normal 和 sans 的字体其实是一样的，serif 是一个带衬线的字体，而 nonospace 是等宽字体
+android:fontFamily：看着像是对 typeface 的一次加强，从它的可选项就能看出来，它更细致的区分了字体的样式 
+如果同时配置了 typeface 和 fontFamily ，将使用 fontFamily 配置的字体，它们俩都是可以配合 typeStyle 属性一起使用的
+通过 android:theme 来配置一个 App 的主题——@style/AppTheme 。在其中追加关于字体的属性 android:fontFamily
+
+
 
 ============================================================
 =====                 Android开发技术                  =====
@@ -1187,3 +1197,5 @@ Android UI优化：http://yydcdut.com/2017/03/10/ui-optimize/
 Android性能优化-电量优化: http://www.jianshu.com/p/ded0ed6fac3d
 
 Android手动显示和隐藏软键盘方法总结 ：http://blog.csdn.net/ccpat/article/details/46717573
+
+免费的字体：fonts.google.com/       www.1001freefonts.com/
