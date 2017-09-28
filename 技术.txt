@@ -679,7 +679,8 @@ android:fontFamily：看着像是对 typeface 的一次加强，从它的可选�
 
 DexClassLoader: 从 .jar 和 .apk 文件加载包含 classes.dex 条目的类
 PathClassLoader: 对本地文件系统中的文件和目录列表进行操作，但不尝试从网络加载类 
-
+一个应用启动后，可以看到有两个 ClassLoader 的实例输出，一个PathClassLoader，应用启动时创建的，用于加载 apk 中的类，另一个是BootClassLoader，系统启动时创建的，用于加载系统相关的类。
+任何运行的Android应用至少包含有两个 ClassLoader，每个应用中的PathClassLoader拥有同一个parent即是BootClassLoader，这样就保证了系统代码共享以及应用代码隔离 
 
 
 ============================================================
