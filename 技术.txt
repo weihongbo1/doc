@@ -1214,6 +1214,10 @@ what： 对应的各种Span，不同的Span对应不同的样式。已知的可�
 project.gradle.addListener(new BuildTimeListener())
 
 
+static boolean isMain() {
+  return Looper.getMainLooper().getThread() == Thread.currentThread();
+}
+
 ============================================================
 =====                      网站                        =====
 ============================================================
