@@ -1218,6 +1218,8 @@ static boolean isMain() {
   return Looper.getMainLooper().getThread() == Thread.currentThread();
 }
 
+long before = Runtime.getRuntime().totalMemory() / 1024 - Runtime.getRuntime().freeMemory() / 1024;
+long after = Runtime.getRuntime().totalMemory() / 1024 - Runtime.getRuntime().freeMemory() / 1024;
 ============================================================
 =====                      网站                        =====
 ============================================================
