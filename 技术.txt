@@ -1275,3 +1275,5 @@ Android性能优化-电量优化: http://www.jianshu.com/p/ded0ed6fac3d
 Android手动显示和隐藏软键盘方法总结 ：http://blog.csdn.net/ccpat/article/details/46717573
 
 免费的字体：fonts.google.com/       www.1001freefonts.com/
+
+不可思议的OOM：http://www.jianshu.com/p/e574f0ffdb42
