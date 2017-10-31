@@ -1220,6 +1220,22 @@ static boolean isMain() {
 
 long before = Runtime.getRuntime().totalMemory() / 1024 - Runtime.getRuntime().freeMemory() / 1024;
 long after = Runtime.getRuntime().totalMemory() / 1024 - Runtime.getRuntime().freeMemory() / 1024;
+
+ActivityManager.getMemoryClass()：     虚拟机java堆大小的上限，分配对象时突破这个大小就会OOM
+ActivityManager.getLargeMemoryClass()：manifest中设置largeheap=true时虚拟机java堆的上限
+Runtime.getRuntime().maxMemory() ：    当前虚拟机实例的内存使用上限，为上述两者之一
+Runtime.getRuntime().totalMemory() ：  当前已经申请的内存，包括已经使用的和还没有使用的
+Runtime.getRuntime().freeMemory() ：   上一条中已经申请但是尚未使用的那部分。那么已经申请并且正在使用的部分used=totalMemory() - freeMemory()
+ActivityManager.MemoryInfo.totalMem:   设备总内存
+ActivityManager.MemoryInfo.availMem:   设备当前可用内存
+/proc/meminfo                                           记录设备的内存信息
+
+
+作者：陶菜菜
+链接：http://www.jianshu.com/p/e574f0ffdb42
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
 ============================================================
 =====                      网站                        =====
 ============================================================
