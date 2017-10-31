@@ -533,6 +533,31 @@ Android GC 那点事:
 https://juejin.im/post/5909c7ef570c3500583bf433
 https://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&mid=400021278&idx=1&sn=0e971807eb0e9dcc1a81853189a092f3&scene=0&key=b410d3164f5f798eafd870697d352ac86e0e54b9605b5fcd2c6a62268c16080ee291069627f13ed906cc2f39706b6a54&ascene=0&uin=NzY0MTg2ODU%3D&devicetype=iMac+MacBookPro11%2C1+OSX+OSX+10.10.5+build(14F27)&version=11000003&pass_ticket=nhSGhYD4LC9FWvUPv26Y7AdIzqEDu8FTImf2AKlyrCk%3D
 
+
+ActivityManager.getMemoryClass()：     虚拟机java堆大小的上限，分配对象时突破这个大小就会OOM
+ActivityManager.getLargeMemoryClass()：manifest中设置largeheap=true时虚拟机java堆的上限
+Runtime.getRuntime().maxMemory() ：    当前虚拟机实例的内存使用上限，为上述两者之一
+Runtime.getRuntime().totalMemory() ：  当前已经申请的内存，包括已经使用的和还没有使用的
+Runtime.getRuntime().freeMemory() ：   上一条中已经申请但是尚未使用的那部分。那么已经申请并且正在使用的部分used=totalMemory() - freeMemory()
+ActivityManager.MemoryInfo.totalMem:   设备总内存
+ActivityManager.MemoryInfo.availMem:   设备当前可用内存
+/proc/meminfo                                           记录设备的内存信息
+
+OutOfMemoryError发生：堆操作时 创建线程时
+进程每打开一个文件就会产生一个文件描述符fd（记录在/proc/pid/fd下面），这个限制表明fd的数目不能超过Max open files规定的数目。
+触发大量网络连接（每个连接处于独立的线程中）并保持，每打开一个socket都会增加一个fd（/proc/pid/fd下多一项），也可以用其他方法，比如打开文件，创建handlerthread等等
+
+这些限制中与线程相关的是/proc/sys/kernel/threads-max，规定了每个进程创建线程数目的上限
+创建大量的空线程（不做任何事情，直接sleep）
+
+可以导致OOM的原因有以下几种： 
+文件描述符(fd)数目超限，即proc/pid/fd下文件数目突破/proc/pid/limits中的限制。可能的发生场景有：
+短时间内大量请求导致socket的fd数激增，大量（重复）打开文件等
+线程数超限，即proc/pid/status中记录的线程数（threads项）突破/proc/sys/kernel/threads-max中规定的最大线程数。可能的发生场景有：
+app内多线程使用不合理，如多个不共享线程池的OKhttpclient等等
+传统的java堆内存超限，即申请堆内存大小超过了 Runtime.getRuntime().maxMemory()
+
+
 热修复--腾讯：
 1、根据Android虚拟机的类加载机制，同一个类只会被加载一次。
 2、Android系统通过PathClassLoader来加载系统类和主dex中的类。而DexClassLoader则用于加载其他dex文件中的类。上述两个类都是继承自BaseDexClassLoader，具体的加载方法是findClass
@@ -1221,20 +1246,6 @@ static boolean isMain() {
 long before = Runtime.getRuntime().totalMemory() / 1024 - Runtime.getRuntime().freeMemory() / 1024;
 long after = Runtime.getRuntime().totalMemory() / 1024 - Runtime.getRuntime().freeMemory() / 1024;
 
-ActivityManager.getMemoryClass()：     虚拟机java堆大小的上限，分配对象时突破这个大小就会OOM
-ActivityManager.getLargeMemoryClass()：manifest中设置largeheap=true时虚拟机java堆的上限
-Runtime.getRuntime().maxMemory() ：    当前虚拟机实例的内存使用上限，为上述两者之一
-Runtime.getRuntime().totalMemory() ：  当前已经申请的内存，包括已经使用的和还没有使用的
-Runtime.getRuntime().freeMemory() ：   上一条中已经申请但是尚未使用的那部分。那么已经申请并且正在使用的部分used=totalMemory() - freeMemory()
-ActivityManager.MemoryInfo.totalMem:   设备总内存
-ActivityManager.MemoryInfo.availMem:   设备当前可用内存
-/proc/meminfo                                           记录设备的内存信息
-
-
-作者：陶菜菜
-链接：http://www.jianshu.com/p/e574f0ffdb42
-來源：简书
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 ============================================================
 =====                      网站                        =====
