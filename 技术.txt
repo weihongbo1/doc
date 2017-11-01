@@ -710,6 +710,8 @@ PathClassLoader: 对本地文件系统中的文件和目录列表进行操作，
 如果我们需要上层覆盖VIEW不可被点击并且要将点击事件穿透下去，我们选用setClickable方法】
 如果我们需要上层覆盖VIEW不可被点击并且不需要将点击事件穿透下去，我们选用setEnabled方法
 
+当系统因为内存不足需要回收 Activity 占用的资源时，Activity 在执行完 onPause() 方法后就可能面临着被销毁的危险，有些生命周期方法，如：onStop()、onDestroy() 根本就不会执行
+
 
 ============================================================
 =====                 Android开发技术                  =====
@@ -1246,6 +1248,29 @@ static boolean isMain() {
 long before = Runtime.getRuntime().totalMemory() / 1024 - Runtime.getRuntime().freeMemory() / 1024;
 long after = Runtime.getRuntime().totalMemory() / 1024 - Runtime.getRuntime().freeMemory() / 1024;
 
+
+<receiver 
+  android:enabled=["true" | "false"]
+  //此 broadcastReceiver 能否接收其他 App 发出的广播
+  //默认值是由 receiver 中有无 intent-filter 决定的：如果有 intent-filter，默认值为 true，否则为 false
+  android:exported=["true" | "false"]
+  android:icon="drawable resource"
+  android:label="string resource"
+  //继承 BroadcastReceiver 子类的类名
+  android:name=".mBroadcastReceiver"
+  //具有相应权限的广播发送者发送的广播才能被此 BroadcastReceiver 所接收；
+  android:permission="string"
+  // BroadcastReceiver 运行所处的进程
+  // 默认为 App 的进程，可以指定独立的进程
+  //注：Android 四大基本组件都可以通过此属性指定自己的独立进程
+  android:process="string" >
+
+  //用于指定此广播接收器将接收的广播类型
+  //本示例中给出的是用于接收网络状态改变时发出的广播
+   <intent-filter>
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+  </intent-filter>
+</receiver>
 
 ============================================================
 =====                      网站                        =====
