@@ -712,6 +712,11 @@ PathClassLoader: 对本地文件系统中的文件和目录列表进行操作，
 
 当系统因为内存不足需要回收 Activity 占用的资源时，Activity 在执行完 onPause() 方法后就可能面临着被销毁的危险，有些生命周期方法，如：onStop()、onDestroy() 根本就不会执行
 
+BroadcastReceiver 有生命周期，但比较短，而且很短。当它的 onReceive() 方法执行完成后，它的生命周期也就随之结束了。这时候由于 BroadcastReceiver 已经不处于 active 状态，所以极有可能被系统干掉。也就是说如果你在 onReceive() 去开线程进行异步操作或者打开 Dialog 都有可能在没达到你要的结果时进程就被系统杀掉了（超时时间10s）
+
+我们要先了解 Android 的 ActivityManagerService 有一个专门的消息队列来接收发送出来的广播，sendBroadcast() 执行完后就立即返回，但这时发送来的广播只是被放入到队列，并不一定马上被处理。当处理到当前广播时，又会把这个广播分发给注册的广播接收分发器ReceiverDispatcher，ReceiverDispatcher 最后又把广播交给接 Receiver 所在的线程的消息队列去处理（就是你熟悉的 UI 线程的 Message Queue）。
+
+整个过程从发送 ActivityManagerService 到 ReceiverDispatcher 进行了两次 Binder 进程间通信，最后还要交到 UI 的消息队列，如果基中有一个消息的处理阻塞了 UI，当然也会延迟你的 onReceive() 的执行
 
 ============================================================
 =====                 Android开发技术                  =====
