@@ -1277,6 +1277,14 @@ long after = Runtime.getRuntime().totalMemory() / 1024 - Runtime.getRuntime().fr
   </intent-filter>
 </receiver>
 
+@ViewDebug.ExportedProperty(category = "drawing")  
+public boolean hasOverlappingRendering() {  
+    return true;  
+}
+在android的View里有透明度的属性，当设置透明度setAlpha的时候，android里默认会把当前view绘制到offscreen buffer中，然后再显示出来。 这个offscreen buffer 可以理解为一个临时缓冲区，把当前View放进来并做透明度的转化，然后在显示到屏幕上
+
+
+
 ============================================================
 =====                      网站                        =====
 ============================================================
@@ -1307,3 +1315,5 @@ Android手动显示和隐藏软键盘方法总结 ：http://blog.csdn.net/ccpat/
 免费的字体：fonts.google.com/       www.1001freefonts.com/
 
 不可思议的OOM：http://www.jianshu.com/p/e574f0ffdb42
+
+Android中那些让你相见恨晚的类-接口-方法：http://blog.csdn.net/yayun0516/article/details/47360885
