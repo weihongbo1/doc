@@ -718,6 +718,42 @@ BroadcastReceiver 有生命周期，但比较短，而且很短。当它的 onRe
 
 整个过程从发送 ActivityManagerService 到 ReceiverDispatcher 进行了两次 Binder 进程间通信，最后还要交到 UI 的消息队列，如果基中有一个消息的处理阻塞了 UI，当然也会延迟你的 onReceive() 的执行
 
+图片压缩：
+质量压缩：bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)，转换为JPEG,PNG（100无用）,WEBP（比JPEG省30%）
+采样压缩：放大图像称为上采样，缩小图像称为下采样。对应有四种常见方法：邻近采样（常用），双线性采样，双立方／双三次采样，Lanczos
+
+PNG->JPEG，不会降低图片尺寸，但会降低视觉质量，从而降低存储体积。由于尺寸不变，但解码后，bitmap占用内存一样
+
+Android Skia 图像引擎：
+Skia 是一个 Google 自己维护的 c++ 实现的图像引擎，提供了基本的画图和简单的编解码功能，可以挂接其他的第三方编码解码库或者硬件编解码库，例如 libpng 和 libjpeg，libgif 等
+最终 Android 编码保存图片的逻辑是 Java 层函数-->Native 函数-->Skia函数-->对应第三库函数（例如 libjpeg）
+tip：
+Android 在之前从某种程度来说使用的算是 libjpeg 的功能阉割版，图像数据编码默认使用的是 standard huffman，而不是 optimized huffman，也就是说使用的是默认的哈夫曼表，并没有根据实际图片去计算相对应的哈夫曼表，Google 在初期考虑到手机的性能瓶颈，计算图片权重这个阶段非常占用 CPU 资源的同时也非常耗时，因为此时需要计算图片所有像素 argb 的权重，这也是早期 Android 的图片压缩率不是特别高的原因之一
+
+邻近采样：
+BitmapFactory.Options options = new BitmapFactory.Options();
+//或者 inDensity 搭配 inTargetDensity 使用，算法和 inSampleSize 一样
+options.inSampleSize = 2;
+Bitmap compress = BitmapFactory.decodeFile("/sdcard/test.png", options);
+官方的解释中我们可以看到 x（x 为 2 的倍数）个像素最后对应一个像素，由于采样率设置为 1/2，所以是两个像素生成一个像素。邻近采样的方式比较粗暴，直接选择其中的一个像素作为生成像素，另一个像素直接抛弃
+
+双线性采样
+Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/test.png");
+Bitmap compress = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/2, bitmap.getHeight()/2, true);（ 函数最终也是使用第二种方式的 matrix 进行缩放）
+或
+Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/test.png");
+Matrix matrix = new Matrix();
+matrix.setScale(0.5f, 0.5f);
+bm = Bitmap.createBitmap(bitmap, 0, 0, bit.getWidth(), bit.getHeight(), matrix, true);
+参考了源像素相应位置周围 2x2 个点的值，根据相对位置取对应的权重，经过计算之后得到目标图像，具有抗锯齿功能
+
+双立方／双三次采样 （ ffmpeg libswscale/swscale.c ）
+更进一步参考了源像素某点周围 4x4 个像素,计算量最大，下采样与双线性差不多，上采样最佳
+
+Lanczos
+Lanczos 算法和双三次插值算法都是使用卷积核来通过输入像素计算输出像素，只不过在算法表现上稍有不同
+
+
 ============================================================
 =====                 Android开发技术                  =====
 ============================================================
@@ -1317,3 +1353,5 @@ Android手动显示和隐藏软键盘方法总结 ：http://blog.csdn.net/ccpat/
 不可思议的OOM：http://www.jianshu.com/p/e574f0ffdb42
 
 Android中那些让你相见恨晚的类-接口-方法：http://blog.csdn.net/yayun0516/article/details/47360885
+
+Android中图片压缩分析（下）：http://www.jianshu.com/p/c581112ca2b2
