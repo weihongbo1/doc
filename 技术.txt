@@ -753,6 +753,19 @@ bm = Bitmap.createBitmap(bitmap, 0, 0, bit.getWidth(), bit.getHeight(), matrix, 
 Lanczos
 Lanczos 算法和双三次插值算法都是使用卷积核来通过输入像素计算输出像素，只不过在算法表现上稍有不同
 
+SharedPreferences
+基于单个xml文件实现的，并且，所有持久化数据都是一次性加载到内存，如果数据过大，是不合适采用SharedPreferences存放的
+SharePreferences数据的加载是同步，读取xml配置，如果其他线程想要在读取之前就是用的话，就会被阻塞，一直wait等待，直到数据读取完成
+再次访问的时候，其实访问的是内存缓存
+提交事务的时候有两种方式，一种是apply，另一种commit，前者是异步的，后者是同步的
+commit函数一般会在当前线程直接写文件，而apply则提交一个事务到已给线程池，之后直接返回
+MODE_MULTI_PROCESS是Google提供的一个多进程模式，作用只会在getSharedPreferences的时候，才会重新从xml重加载
+
+SharePreferences是Android基于xml实现的一种数据持久话手段
+SharePreferences不支持多进程
+SharePreferences的commit与apply一个是同步一个是异步（大部分场景下）
+不要使用SharePreferences存储太大的数据
+
 
 ============================================================
 =====                 Android开发技术                  =====
