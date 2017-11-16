@@ -1368,3 +1368,5 @@ Android手动显示和隐藏软键盘方法总结 ：http://blog.csdn.net/ccpat/
 Android中那些让你相见恨晚的类-接口-方法：http://blog.csdn.net/yayun0516/article/details/47360885
 
 Android中图片压缩分析（下）：http://www.jianshu.com/p/c581112ca2b2
+
+Android应用开发性能优化完全分析：http://blog.csdn.net/yanbober/article/details/48394201#t33
