@@ -1333,6 +1333,14 @@ public boolean hasOverlappingRendering() {
 在android的View里有透明度的属性，当设置透明度setAlpha的时候，android里默认会把当前view绘制到offscreen buffer中，然后再显示出来。 这个offscreen buffer 可以理解为一个临时缓冲区，把当前View放进来并做透明度的转化，然后在显示到屏幕上
 
 
+<meta-data 
+	android:name="android.max_aspect"
+	android:value="2.1"/>
+
+max_aspect 属性表示 App 能够支持的最大屏幕比例，官方建议我们将该值设置为 2.1 或者更高的值。
+**注意：**如果你没有使用 meta-data 标签设置 max_aspect 属性，同时 android:resizeableActivity 属性值为 true 的话，App 默认使用的最大 aspect 默认值为 1.8（大约 16:9 的样子）。
+备注： resizeableActivity 属性在 targetSDKVersion 小于 24 的应用中值为 false，其他为 true。
+
 
 ============================================================
 =====                      网站                        =====
