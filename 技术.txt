@@ -1399,3 +1399,5 @@ Android应用开发性能优化完全分析：http://blog.csdn.net/yanbober/arti
 你不知道的Android进程化--进程信息：https://juejin.im/post/5a1f88baf265da43163cd8f4
 
 探索安卓中有意义的动画！：https://segmentfault.com/a/1190000004182537
+
+自定义View公式：https://juejin.im/post/5a30fd7c5188255ea95bf32f
