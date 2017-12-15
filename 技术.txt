@@ -766,6 +766,13 @@ SharePreferences不支持多进程
 SharePreferences的commit与apply一个是同步一个是异步（大部分场景下）
 不要使用SharePreferences存储太大的数据
 
+MultiDex初次启动APP优化：
+安装完成并初次启动APP的时候，5.0以下某些低端机会出现ANR或者长时间卡顿不进入引导页，而罪魁祸首是MultiDex.install(Context context)的dexopt过程耗时过长
+1、在Application.attachBaseContext(Context base)中，判断是否初次启动，以及系统版本是否小于5.0，如果是，跳到2；否则，直接执行MultiDex.install(Context context)。
+2、开启一个新进程，在这个进程中执行MultiDex.install(Context context)。执行完毕，唤醒主进程，自身结束。主进程在开启新进程后，自身是挂起的，直到被唤醒。
+3、唤醒的主进程继续执行初始化操作。
+
+
 
 ============================================================
 =====                 Android开发技术                  =====
