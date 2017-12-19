@@ -779,6 +779,30 @@ MultiDex初次启动APP优化：
 Android 搜狗输入法在微信中发送图片和表情：
 把表情或图片的路径提交到编辑框，微信的编辑框自动就会帮你识别该图片
 
+线程池实践：
+AsynTask 4.0
+默认线程池是 SingleThreadExecutor; 单一串行线程池。
+内部还内置一个CPU*2+1的 FixedThreadPool，命名为：THREAD_POOL_EXECUTOR。
+
+RxJava
+Schedulers.io( )	 默认是一个CachedThreadScheduler，用于IO密集型任务，如异步阻塞IO操作（读写文件、读写数据库、网络信息交互等）所使用的 Scheduler。
+Schedulers.computation( )	 默认是：FixedThreadPool。用于CPU 密集型计算，即不会被 I/O 等操作限制性能的操作，例如图形的计算，事件循环或和回调处理
+Schedulers.immediate( )	在当前线程立即开始执行任务，相当于不指定线程。这是默认的 Scheduler
+AndroidSchedulers.mainThread()	Android专用的，指定的操作将在 Android 主线程运行
+Schedulers.from(executor)	使用指定的Executor作为调度器
+Schedulers.newThread()	总是启用新线程，并在新线程执行操作。
+
+EventBus:
+使用 newCachedThreadPool，实现 前台线程通知
+
+OKHTTP:
+类似 newCachedThreadPool
+实现： executor = new ThreadPoolExecutor(0, 2147483647, 60L, TimeUnit.SECONDS, new SynchronousQueue(), Util.threadFactory("OkHttp ConnectionPool", true));
+
+Fresco
+Default implementation of SerialExecutorService
+
+
 ============================================================
 =====                 Android开发技术                  =====
 ============================================================
