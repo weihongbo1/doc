@@ -853,6 +853,11 @@ OKHTTP:
 Fresco
 Default implementation of SerialExecutorService
 
+Activity 中 setContentView() 与 addContentView() 的区别
+如果多次调用 setContentView() ，则之后每次都会清空 mContentParent 容器。然后组装资源 layoutResID 。
+如果多次调用 addContentView() ，则之后每次都会将 View 添加到 mContentParent 容器中。最后产生 View 的叠加效果。
+这个 mContentParent 存在于 PhoneWindow 中。
+
 
 ============================================================
 =====                 Android开发技术                  =====
