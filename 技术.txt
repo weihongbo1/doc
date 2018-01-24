@@ -1499,3 +1499,5 @@ android6.0进入Material Design时代：http://blog.csdn.net/cao861544325/articl
 Android WebView 全面干货指南：http://www.jianshu.com/p/fd61e8f4049e
 
 Android截屏方案：https://juejin.im/post/5a33403b6fb9a045132abdb6
+
+ViewPager刷新问题原理分析及解决方案（FragmentPagerAdapter+FragementStatePagerAdapter）:https://juejin.im/post/5a4c77455188252bca05411f
