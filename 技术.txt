@@ -1451,6 +1451,12 @@ max_aspect 属性表示 App 能够支持的最大屏幕比例，官方建议我�
     <item name="android:colorControlNormal">@color/colorControlNormal</item>
 </style>
 
+Proguard：
+当您加载了映射文件到 APK Analyzer时（点击 “Load Proguard mappings… “ 按钮）， 您可以在 DEX 视图树中看到一些额外功能：
+所有的名字都是混淆前的（即您可以看到原始的名字），被 ProGuard 配置规则 kept 的包，类，方法和属性会显示成粗体
+您可以开启 “Show removed nodes” 选项来看任何被 ProGuard 移除的内容（字体上会有删除线）。右击树上的一个节点可以让您生成一个 keep 规则以便您粘贴到您的配置文件中。
+
+
 ============================================================
 =====                      网站                        =====
 ============================================================
