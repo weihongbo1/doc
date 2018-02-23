@@ -612,6 +612,25 @@ OutOfMemoryError发生：堆操作时 创建线程时
 app内多线程使用不合理，如多个不共享线程池的OKhttpclient等等
 传统的java堆内存超限，即申请堆内存大小超过了 Runtime.getRuntime().maxMemory()
 
+-dalvik.vm.heapstartsize            
+堆分配的初始大小，调整这个值会影响到应用的流畅性和整体ram消耗。这个值越小，系统ram消耗越慢，但是由于初始值较小，一些较大的应用需要扩张这个堆，从而引发gc和堆调整的策略，会应用反应更慢。相反，这个值越大系统ram消耗越快，但是程序更流畅。
+
+-dalvik.vm.heapgrowthlimit     
+受控情况下的极限堆（仅仅针对dalvik堆，不包括native堆）大小，dvm heap是可增长的，但是正常情况下dvm heap的大小是不会超过dalvik.vm.heapgrowthlimit的值（非正常情况下面会详细说明）。这个值控制那些受控应用的极限堆大小，如果受控的应用dvm heap size超过该值，则将引发oom（out of memory）。
+
+-dalvik.vm.heapsize 
+不受控情况下的极限堆大小，这个就是堆的最大值。不管它是不是受控的。这个值会影响非受控应用的dalvik heap size。一旦dalvik heap size超过这个值，直接引发oom。
+
+如果要使用大堆。需要在manifest中指定android:largeHeap为true。这样dvm heap最大可达dalvik.vm.heapsize。
+1  首先判断一下需要申请的size是不是过大，如果申请的size超过了堆的最大限制，则转入步骤6
+2  尝试分配，如果成功则返回，失败则转入步骤3
+3  判断是否gc正在进行垃圾回收，如果正在进行则等待回收完成之后，尝试分配。如果成功则返回，失败则转入步骤4
+4  自己启动gc进行垃圾回收，这里gcForMalloc的参数是false。所以不会回收软引用，回收完成后尝试分配，如果成功则返回，失败则转入步骤5
+5  调用dvmHeapSourceAllocAndGrow尝试分配，这个函数会扩张堆。所以heap startup的时候可以给一个比较小的初始堆，实在不够用再调用它进行扩张
+6  进入回收软引用阶段，这里gcForMalloc的参数是ture，所以需要回收软引用。然后调用dvmHeapSourceAllocAndGrow尝试分配，如果失败则抛出OOM 
+
+这里会把HeapSource的growthLimit设置为maximumSize，说简单点就是把growthLimit有原来dalvik.vm.heapgrowthlimit的值调整为dalvik.vm.heapsize。不过分配的时候判断oom的依据是根据heap中的maximumSize来决定。这里不得不说一下HeapSource的两个堆了，heaps[]数组中有两个堆。简单来讲，0号堆是可用堆，是开发给上层使用的。1号堆是fork的时候从zygote进程直接复制过来的，这个是死的，不会由dvm开放给上层使用。overhead标明了堆中已经分配可多少（包括0号堆和1号堆）。所以上层能分配打的最大使用量为 gHs->maxmumSize - overhead。
+
 
 热修复--腾讯：
 1、根据Android虚拟机的类加载机制，同一个类只会被加载一次。
@@ -705,7 +724,7 @@ additionalParameters '-S', 'src/main/res2',
             '-S', 'src/main/res3',
             '--auto-add-overlay'
 
- Instant Apps 是基于 Android 操作系统的，微信小程序是基于微信 App 生态的，但本质上还是不一样的，Instant Apps 本质上还是原生 App，只不过允许你在下载安装之前，先体验下 App 部分模块的功能，觉得不错，适合你，那么你可以再下载安装，而微信小程序本质上不是原生应用，他是基于一种类似 React Native 的框架来达到原生的体验，而且只能在微信内部运行
+Instant Apps 是基于 Android 操作系统的，微信小程序是基于微信 App 生态的，但本质上还是不一样的，Instant Apps 本质上还是原生 App，只不过允许你在下载安装之前，先体验下 App 部分模块的功能，觉得不错，适合你，那么你可以再下载安装，而微信小程序本质上不是原生应用，他是基于一种类似 React Native 的框架来达到原生的体验，而且只能在微信内部运行
 
 项目编译时产生的R文件存在的位置是与Manifest 中配置包名也就是项目的工程目录相对应的目录中，而代码中获取的项目包名是 build.gradle 中配置的applicationId对应的包名，如果再使用这个包名去反射获取R文件当然是失败的了
 
