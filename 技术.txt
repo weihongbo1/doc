@@ -1475,7 +1475,10 @@ Proguard：
 所有的名字都是混淆前的（即您可以看到原始的名字），被 ProGuard 配置规则 kept 的包，类，方法和属性会显示成粗体
 您可以开启 “Show removed nodes” 选项来看任何被 ProGuard 移除的内容（字体上会有删除线）。右击树上的一个节点可以让您生成一个 keep 规则以便您粘贴到您的配置文件中。
 
-
+tools:text="@tools:sample/date/ddmmyy"
+tools:text="@tools:sample/lorem/random"
+tools:text="@tools:sample/full_names"
+tools:text="@sample/users.json/data/city"
 ============================================================
 =====                      网站                        =====
 ============================================================
