@@ -1539,3 +1539,5 @@ android dalvik heap 浅析 ：http://blog.csdn.net/cqupt_chen/article/details/11
 2018 年初值得关注的 25 个新 Android 库和项目：https://www.oschina.net/translate/25-new-android-libraries-and-projects-2018
 
 Android多点触控最佳实践：https://www.jianshu.com/p/f8ef2685716d
+
+Android多个网络连接：https://juejin.im/post/5aa87dcbf265da23783ff52e
