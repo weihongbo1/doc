@@ -1541,3 +1541,5 @@ android dalvik heap 浅析 ：http://blog.csdn.net/cqupt_chen/article/details/11
 Android多点触控最佳实践：https://www.jianshu.com/p/f8ef2685716d
 
 Android多个网络连接：https://juejin.im/post/5aa87dcbf265da23783ff52e
+
+人脸识别 -- 活体检测(张嘴摇头识别)：https://juejin.im/post/5aaf0e68f265da237f1e168c
