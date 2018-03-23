@@ -64,6 +64,17 @@ foreach内部的实现机制其实就是使用的Iterator
 ArrayList的头部插入了一个元素，使得你所有的元素都往后移动，于是你当前访问的第5个元素就会被重复访问。
 java 认为在迭代过程中，容器应当保持不变。因此，java 容器中通常保留了一个域称为 modCount，每次你对容器修改，这个值就会加1。当你调用 iterator 方法时，返回的迭代器会记住当前的 modCount，随后迭代过程中会检查这个值，一旦发现这个值发生变化，就说明你对容器做了修改，就会抛异常。
 
+for (Integer i : list) {
+    System.out.println(i);
+}
+反编译之后：
+Integer i;
+for(Iterator iterator = list.iterator(); iterator.hasNext(); System.out.println(i)){
+    i = (Integer)iterator.next();        
+}
+所以 Iterator 在工作的时候是不允许被迭代的对象被改变的。但你可以使用 Iterator 本身的方法 remove() 来删除对象，Iterator.remove() 方法会在删除当前迭代对象的同时维护索引的一致性。
+
+
 
 try中的return可以理解为保存了一份副本，即值或对象地址的保存，finally中的更改是更改原先值，return是返回副本
 如果try中有return而finally中也有return，那么后者将会让前者失效！
@@ -220,6 +231,7 @@ z 时区
 版本号 : 紧接着4个魔数字节后面存储的是Class文件的版本号：第5和6个字节是次版本号，第7和第8个字节是主版本号。
 
 常量池 ： 接着主次版本号之后的是常量池入口，常量池可以理解为Class文件之中的资源仓库，它是Class文件结构中其他项目关联最多的数据类型，也是占用Class文件空间最大的数据项目之一。（Class类文件中的常量池在类未加载到内存中可以称为静态常量池） 。入口处用2个字节标识常量池常量数量。
+
 
 
 
