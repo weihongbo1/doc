@@ -893,6 +893,13 @@ Elevation 是静态的，所以你最好不要动态的去改变他。如果你�
 Translation Z 是动态的，当你创建一个空白项目，并在其中增加一个按钮的时候，当你按下它你将会看到阴影变大了。实际上 Elevation 并没有变化，而是 Translation Z 属性在变化。这是 Android 使用默认的状态列表动画，更改 Z 属性。
 Z Vaue = Elevation + TranslationZ
 
+列表优化：
+1、减少布局层级，避免过多的Item View的无用布局嵌套；
+2、对于有图片的列表，要在滑动时对图片加以控制，即滑动时不加载图片，停止滑动之后再加载图片；
+3、应当避免在Adapter的填充数据时做过多的计算，或者嵌套过多的逻辑判断。对于复杂的计算结果应当在Adapter填充数据之前计算完成；
+4、尽管在数据Bean中完成对各种数据变换的操作，包括复杂的计算，比如将String转换成需要的SpannableStringBuilder等；
+5、addViewInLayout()和removeViewInLayout()来减少onMeasure()和onLayout()的次数以节省性能开支（该方法中的preventRequestLayout参数，为true，添加View时不会触发onMeasure和onLayout操作）
+
 
 ============================================================
 =====                 Android开发技术                  =====
