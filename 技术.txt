@@ -1502,6 +1502,19 @@ tools:text="@tools:sample/date/ddmmyy"
 tools:text="@tools:sample/lorem/random"
 tools:text="@tools:sample/full_names"
 tools:text="@sample/users.json/data/city"
+
+优化嵌套的RecyclerView
+允许你可以给RecyclerVIew设置自定义的视图池：
+public OuterRecyclerViewAdapter(List<Item> items) {
+    //Constructor stuff
+    viewPool = new RecyclerView.RecycledViewPool();
+}
+@Override
+public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    //Create viewHolder etc
+    holder.innerRecyclerView.setRecycledViewPool(viewPool);
+}
+
 ============================================================
 =====                      网站                        =====
 ============================================================
