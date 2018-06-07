@@ -1577,3 +1577,5 @@ Android多个网络连接：https://juejin.im/post/5aa87dcbf265da23783ff52e
 人脸识别 -- 活体检测(张嘴摇头识别)：https://juejin.im/post/5aaf0e68f265da237f1e168c
 
 实现高性能微信朋友圈：https://juejin.im/post/5aeb21fc5188256737063d71
+
+RxJava2 只看这一篇文章就够了：https://juejin.im/post/5b17560e6fb9a01e2862246f
