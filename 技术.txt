@@ -1581,3 +1581,5 @@ Android多个网络连接：https://juejin.im/post/5aa87dcbf265da23783ff52e
 RxJava2 只看这一篇文章就够了：https://juejin.im/post/5b17560e6fb9a01e2862246f
 
 Android刘海屏适配方案：https://juejin.im/post/5b120189e51d45068b495135
+
+Android相机开发：https://www.colabug.com/2319083.html
