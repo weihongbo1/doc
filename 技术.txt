@@ -1515,6 +1515,32 @@ public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     holder.innerRecyclerView.setRecycledViewPool(viewPool);
 }
 
+如何模拟应用程序被杀掉？
+更新：Daniel Lew指出，最简单的方法是在DDMS中点击"Stop Porcess"杀掉你的程序，在你调试程序的时候可以这样做。
+  你可以通过模拟器或者一个Root过的真机来测试实际效果：
+
+按Home按键退出你的程序；
+
+在控制台，敲入如下命令（Windows系统下 WIN + R -> cmd -> 回车）
+ # 找到该APP的进程ID
+ adb shell ps
+ # 找到你APP的报名
+  
+ # Mac/Unix: save some time by using grep:
+ adb shell ps | grep your.app.package
+  
+ # 按照上述命令操作后，看起来是这样子的: 
+ # USER      PID   PPID  VSIZE  RSS     WCHAN    PC         NAME
+ # u0_a198   21997 160   827940 22064 ffffffff 00000000 S your.app.package
+  
+ # 通过PID将你的APP杀掉
+ adb shell kill -9 21997
+  
+ # APP现在被杀掉啦
+
+
+现在在桌面长按Home按键通过后台任务管理器打开你的APP，此时系统就会重新创建一个MyApplication实例了。
+
 ============================================================
 =====                      网站                        =====
 ============================================================
