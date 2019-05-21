@@ -1614,3 +1614,5 @@ Android刘海屏适配方案：https://juejin.im/post/5b120189e51d45068b495135
 Android相机开发：https://www.colabug.com/2319083.html
 
 https://blog.csdn.net/vicemiami/article/details/54314193
+
+mediafile：https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/media/java/android/media/MediaFile.java
